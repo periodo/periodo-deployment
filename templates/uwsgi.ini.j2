@@ -1,0 +1,17 @@
+[uwsgi]
+
+plugins         = python3
+chdir           = {{ install_root }}
+virtualenv      = {{ install_root }}/venv
+module          = {{ project_name }}
+callable        = app
+
+# process-related settings
+master          = true
+processes       = 2
+socket          = {{ www_root }}/uwsgi.sock
+chown-socket    = www-data:www-data
+chmod-socket    = 664
+
+# clear environment on exit
+vacuum          = true
