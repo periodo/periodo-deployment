@@ -120,6 +120,7 @@
   - name: Request letsencrypt challenge
     letsencrypt:
       acme_directory: "{{ letsencrypt_acme_directory }}"
+      agreement: "{{ letsencrypt_agreement }}"
       account_email: "{{ letsencrypt_account_email }}"
       account_key: "{{ letsencrypt_account_key }}"
       csr: "{{ https_csr }}"
@@ -165,6 +166,7 @@
   - name: Respond to challenge and fetch certificate
     letsencrypt:
       acme_directory: "{{ letsencrypt_acme_directory }}"
+      agreement: "{{ letsencrypt_agreement }}"
       account_email: "{{ letsencrypt_account_email }}"
       account_key: "{{ letsencrypt_account_key }}"
       csr: "{{ https_csr }}"
