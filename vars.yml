@@ -23,6 +23,9 @@ install_root: "/srv/{{ project_name }}"
 # the root path for www-visible documents
 www_root: "/var/www/{{ project_name }}"
 
+# the path to the sqlite db file
+db_path: "{{ www_root }}/db.sqlite"
+
 # key size to use when generating keys
 rsa_key_size: 4096
 

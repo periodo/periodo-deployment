@@ -220,7 +220,7 @@
     - restart uwsgi
 
   - name: Copy secrets file
-    copy:
+    template:
       src: secrets/secrets.py
       dest: "{{ install_root }}/{{ project_name }}/secrets.py"
       group: deploy
@@ -229,6 +229,13 @@
     make:
       chdir: "{{ install_root }}"
       target: all
+
+  - name: Make DB file writable by web server
+    file:
+      path: "{{ db_path }}"
+      state: "file"
+      mode: u=rwx,g=rwx,o=rx
+    become: true
 
   - name: Upload initial data to be loaded
     copy:
