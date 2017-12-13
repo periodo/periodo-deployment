@@ -35,6 +35,34 @@ server {
     gzip_types	text/turtle application/javascript application/json application/ld+json;
     gzip_vary on;
 
+    location = / {
+        index index.html;
+    }
+
+    location = /index.html {
+        root {{ www_root }}/static/html;
+    }
+
+    location = /favicon.ico {
+        root {{ www_root }}/static/html;
+    }
+
+    location /images/ {
+        root {{ www_root }}/static/html;
+    }
+
+    location = /v.ttl {
+        alias {{ www_root }}/static/vocab.ttl;
+    }
+
+    location = /v.ttl.html {
+        alias {{ www_root }}/static/vocab.html;
+    }
+
+    location ~ /periodo-client(.*).js {
+        alias {{ www_root }}/static/html/periodo-client$1.js;
+    }
+
     location / {
         uwsgi_pass  {{ project_name }}_app;
         include  /etc/nginx/uwsgi_params;

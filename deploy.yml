@@ -230,6 +230,12 @@
       chdir: "{{ install_root }}"
       target: all
 
+  - name: Move static files to WWW root
+    command: mv "{{ install_root }}/{{ project_name }}/static" "{{ www_root }}"
+    args:
+      removes: "{{ install_root }}/{{ project_name }}/static"
+      creates: "{{ www_root }}/static"
+
   - name: Make DB file writable by web server
     file:
       path: "{{ db_path }}"
