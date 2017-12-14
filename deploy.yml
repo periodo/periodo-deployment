@@ -230,16 +230,10 @@
       chdir: "{{ install_root }}"
       target: all
 
-  - name: Move static files to WWW root
-    command: mv "{{ install_root }}/{{ project_name }}/static" "{{ www_root }}"
-    args:
-      removes: "{{ install_root }}/{{ project_name }}/static"
-      creates: "{{ www_root }}/static"
-
   - name: Make DB file writable by web server
     file:
       path: "{{ db_path }}"
-      state: "file"
+      state: file
       mode: u=rwx,g=rwx,o=rx
     become: true
 
@@ -264,6 +258,16 @@
       target: fetch_latest_client
     notify:
     - restart uwsgi
+
+  - name: Remove old static files from WWW root
+    file:
+      path: "{{ www_root }}/static"
+      state: absent
+
+  - name: Move new static files to WWW root
+    command: mv "{{ install_root }}/{{ project_name }}/static" "{{ www_root }}"
+    args:
+      removes: "{{ install_root }}/{{ project_name }}/static"
 
   - name: Copy uwsgi config
     template:
