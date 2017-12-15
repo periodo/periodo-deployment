@@ -26,15 +26,15 @@ $ ansible-playbook -l staging.perio.do -K --extra-vars "initial_data=../periodo-
 
 ## Explanation of files
 
-[`periodo-server/ansible.cfg`](ansible.cfg) is the [Ansible configuration file](http://docs.ansible.com/ansible/latest/intro_configuration.html)
+[`ansible.cfg`](periodo-server/ansible.cfg) is the [Ansible configuration file](http://docs.ansible.com/ansible/latest/intro_configuration.html)
 
-[`periodo-server/inventory.ini`](inventory.ini) is the [inventory](http://docs.ansible.com/ansible/latest/intro_inventory.html) of hosts to deploy to
+[`inventory.ini`](periodo-server/inventory.ini) is the [inventory](http://docs.ansible.com/ansible/latest/intro_inventory.html) of hosts to deploy to
 
-[`periodo-server/deploy.yml`](deploy.yml) is the [playbook](http://docs.ansible.com/ansible/latest/playbooks.html)
+[`deploy.yml`](periodo-server/deploy.yml) is the [playbook](http://docs.ansible.com/ansible/latest/playbooks.html)
 
-[`periodo-server/vars.yml`](vars.yml) defines the playbook [variables](http://docs.ansible.com/ansible/latest/playbooks_variables.html)
+[`vars.yml`](periodo-server/vars.yml) defines the playbook [variables](http://docs.ansible.com/ansible/latest/playbooks_variables.html)
 
-[`periodo-server/templates`](templates) contains Jinja2 templates for the nginx and uwsgi configurations
+[`templates`](periodo-server/templates) contains Jinja2 templates for the nginx and uwsgi configurations
 
 
 
