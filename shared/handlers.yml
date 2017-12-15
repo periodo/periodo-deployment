@@ -1,0 +1,12 @@
+---
+- name: restart uwsgi
+  service: name=uwsgi state=restarted
+  become: true
+
+- name: restart dnsmasq
+  service: name=dnsmasq state=restarted
+  become: true
+
+- name: restart nginx
+  service: name=nginx state=restarted
+  become: true

@@ -1,0 +1,11 @@
+---
+- name: Install python2 for Ansible
+  raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qqy python-dev)"
+  register: output
+  changed_when:
+  - output.stdout != ""
+  - output.stdout != "\r\n"
+  become: true
+
+- name: Gather facts
+  setup:
