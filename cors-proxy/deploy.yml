@@ -1,0 +1,201 @@
+---
+- hosts: all
+  vars_files:
+  - vars.yml
+
+  gather_facts: false
+
+  pre_tasks:
+
+  - name: Install python2 for Ansible
+    raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qqy python-dev)"
+    register: output
+    changed_when:
+    - output.stdout != ""
+    - output.stdout != "\r\n"
+    become: true
+
+  - name: Gather facts
+    setup:
+
+  tasks:
+
+  - name: Install system packages
+    apt: pkg={{ item }} update-cache=yes
+    with_items: "{{ system_packages }}"
+    become: true
+
+  - name: Make nginx sites-enabled writable by deploy group
+    file:
+      path: /etc/nginx/sites-enabled
+      state: directory
+      group: deploy
+      mode: u=rwx,g=rwx,o=rx
+    become: true
+
+  - name: Remove default nginx site
+    file: path=/etc/nginx/sites-enabled/default state=absent
+    become: true
+
+  - name: Create letsencrypt keys directory
+    file: path="{{ letsencrypt_keys }}" state=directory
+    become: true
+
+  - name: Create letsencrypt certs directory
+    file: path="{{ letsencrypt_certs }}" state=directory
+    become: true
+
+  - name: Create letsencrypt challenges directory
+    file:
+      path: "{{ letsencrypt_challenges }}"
+      state: directory
+      group: www-data
+      mode: u=rwx,g=rwx,o=rx,g+s
+    become: true
+
+  - name: Generate letsencrypt account private key
+    command:
+      "openssl genrsa -out {{ letsencrypt_account_key }} {{ rsa_key_size }}"
+    args:
+      creates: "{{ letsencrypt_account_key }}"
+    become: true
+
+  - name: Make letsencrypt account private key readable by root only
+    file:
+      path: "{{ letsencrypt_account_key }}"
+      mode: u=rw,g=,o=
+    become: true
+
+  - name: Generate HTTPS private key
+    command: "openssl genrsa -out {{ https_key }} {{ rsa_key_size }}"
+    args:
+      creates: "{{ https_key }}"
+    become: true
+
+  - name: Make HTTPS private key readable by root only
+    file:
+      path: "{{ https_key }}"
+      mode: u=rw,g=,o=
+    become: true
+
+  - name: Generate certificate signing request
+    command: "openssl req -new
+      -key {{ https_key }}
+      -out {{ https_csr }}
+      -nodes -subj '/C=US/ST=NC/L=CH/O=UNC/CN={{ server_name }}'"
+    args:
+      creates: "{{ https_csr }}"
+    become: true
+
+  - name: Make certificate signing request readable by root only
+    file:
+      path: "{{ https_csr }}"
+      mode: u=rw,g=,o=
+    become: true
+
+  - name: Request letsencrypt challenge
+    letsencrypt:
+      acme_directory: "{{ letsencrypt_acme_directory }}"
+      agreement: "{{ letsencrypt_agreement }}"
+      account_email: "{{ letsencrypt_account_email }}"
+      account_key: "{{ letsencrypt_account_key }}"
+      csr: "{{ https_csr }}"
+      dest: "{{ https_cert }}"
+    register: challenge
+    become: true
+
+  - name: Create challenge directory
+    file:
+      path: "{{ letsencrypt_challenges }}/{{ challenge_dest | dirname }}"
+      state: directory
+    when: challenge|changed
+    vars:
+      challenge_dest:
+        "{{ challenge['challenge_data'][server_name]['http-01']['resource'] }}"
+
+  - name: Move challenge to publicly served directory
+    copy:
+      dest: "{{ letsencrypt_challenges }}/{{ challenge_file['resource'] }}"
+      content: "{{ challenge_file['resource_value'] }}"
+      mode: u=rw,g=r,o=r
+    when: challenge|changed
+    vars:
+      challenge_file:
+        "{{ challenge['challenge_data'][server_name]['http-01'] }}"
+    become: true
+
+  - name: Copy nginx config to serve challenge
+    template:
+      src: templates/nginx-challenge.conf.j2
+      dest: "/etc/nginx/sites-enabled/{{ project_name }}-challenge.conf"
+      group: deploy
+    when: challenge|changed
+    vars:
+      challenge_dest:
+        "{{ challenge['challenge_data'][server_name]['http-01']['resource'] }}"
+    notify:
+    - restart nginx
+
+  # ensure that nginx gets restarted after enabling challenge site
+  - meta: flush_handlers
+
+  - name: Respond to challenge and fetch certificate
+    letsencrypt:
+      acme_directory: "{{ letsencrypt_acme_directory }}"
+      agreement: "{{ letsencrypt_agreement }}"
+      account_email: "{{ letsencrypt_account_email }}"
+      account_key: "{{ letsencrypt_account_key }}"
+      csr: "{{ https_csr }}"
+      dest: "{{ https_cert }}"
+      data: "{{ challenge }}"
+    become: true
+
+  - name: Remove nginx site for challenge
+    file:
+      path: "/etc/nginx/sites-enabled/{{ project_name }}-challenge.conf"
+      state: absent
+
+  - name: Download intermediate cerificates
+    get_url:
+      url: "https://letsencrypt.org/certs/{{ item }}"
+      dest: "{{ letsencrypt_certs }}/{{ item }}"
+      mode: 0444
+    with_items:
+    - lets-encrypt-x3-cross-signed.pem
+    - lets-encrypt-x4-cross-signed.pem
+    become: true
+
+  - name: Create a full-chain certificate from components
+    shell: >
+      cat {{ https_cert }}
+      {{ letsencrypt_certs }}/lets-encrypt-x3-cross-signed.pem
+      {{ letsencrypt_certs }}/lets-encrypt-x4-cross-signed.pem
+      > {{ https_chain }}
+    when: challenge|changed
+    become: true
+
+  - name: Create Diffie–Hellman parameters
+    shell: >
+      openssl dhparam -dsaparam -out {{ https_dhparams }} {{ rsa_key_size }}
+    when: challenge|changed
+    become: true
+
+  - name: Copy nginx config
+    template:
+      src: templates/nginx.conf.j2
+      dest: "/etc/nginx/sites-enabled/{{ project_name }}.conf"
+      group: deploy
+    notify:
+    - restart nginx
+
+  - name: Ensure nginx is running
+    service: name=nginx state=started enabled=yes
+    become: true
+
+  handlers:
+
+  - name: restart nginx
+    service: name=nginx state=restarted
+    become: true
+
+
