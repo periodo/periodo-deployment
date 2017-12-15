@@ -180,6 +180,19 @@
     when: challenge|changed
     become: true
 
+  - name: Copy dnsmasq config
+    copy:
+      src: files/dnsmasq.conf
+      dest: "/etc/dnsmasq.conf"
+      group: deploy
+    become: true
+    notify:
+    - restart dnsmasq
+
+  - name: Ensure dnsmasq is running
+    service: name=dnsmasq state=started enabled=yes
+    become: true
+
   - name: Copy nginx config
     template:
       src: templates/nginx.conf.j2
@@ -196,6 +209,10 @@
 
   - name: restart nginx
     service: name=nginx state=restarted
+    become: true
+
+  - name: restart dnsmasq
+    service: name=dnsmasq state=restarted
     become: true
 
 
