@@ -2,7 +2,7 @@
 - name: Copy nginx config
   template:
     src: templates/nginx.conf.j2
-    dest: "/etc/nginx/sites-enabled/{{ project_name }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ server_name }}.conf"
     group: deploy
   notify:
   - restart nginx

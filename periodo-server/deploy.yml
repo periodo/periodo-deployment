@@ -56,7 +56,7 @@
   - name: Copy secrets file
     template:
       src: secrets/secrets.py
-      dest: "{{ install_root }}/{{ project_name }}/secrets.py"
+      dest: "{{ install_root }}/periodo/secrets.py"
       group: deploy
 
   - name: Create vocabulary file and empty DB
@@ -99,14 +99,14 @@
       state: absent
 
   - name: Move new static files to WWW root
-    command: mv "{{ install_root }}/{{ project_name }}/static" "{{ www_root }}"
+    command: mv "{{ install_root }}/periodo/static" "{{ www_root }}"
     args:
-      removes: "{{ install_root }}/{{ project_name }}/static"
+      removes: "{{ install_root }}/periodo/static"
 
   - name: Copy uwsgi config
     template:
       src: templates/uwsgi.ini.j2
-      dest: "/etc/uwsgi/apps-enabled/{{ project_name }}.ini"
+      dest: "/etc/uwsgi/apps-enabled/{{ server_name }}.ini"
       group: deploy
     notify:
     - restart uwsgi

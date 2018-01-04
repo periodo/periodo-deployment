@@ -101,7 +101,7 @@
 - name: Copy nginx config to serve challenge
   template:
     src: templates/nginx-challenge.conf.j2
-    dest: "/etc/nginx/sites-enabled/{{ project_name }}-challenge.conf"
+    dest: "/etc/nginx/sites-enabled/{{ server_name }}-challenge.conf"
     group: deploy
   when: challenge|changed
   vars:
@@ -126,7 +126,7 @@
 
 - name: Remove nginx site for challenge
   file:
-    path: "/etc/nginx/sites-enabled/{{ project_name }}-challenge.conf"
+    path: "/etc/nginx/sites-enabled/{{ server_name }}-challenge.conf"
     state: absent
 
 - name: Download intermediate cerificates

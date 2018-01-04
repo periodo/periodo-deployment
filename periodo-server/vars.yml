@@ -14,15 +14,12 @@ system_packages:
 
 # the git repository URL
 project_repo: https://github.com/periodo/periodo-server.git
-    
-# a unix path-friendly name
-project_name: periodo
 
 # the root path to install to
-install_root: "/srv/{{ project_name }}"
+install_root: "/srv/{{ server_name }}"
 
 # the root path for www-visible documents
-www_root: "/var/www/{{ project_name }}"
+www_root: "/var/www/{{ server_name }}"
 
 # the path to the sqlite db file
 db_path: "{{ www_root }}/db.sqlite"

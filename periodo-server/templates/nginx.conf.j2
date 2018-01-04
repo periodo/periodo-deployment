@@ -1,5 +1,5 @@
 # the upstream component nginx needs to connect to
-upstream {{ project_name }}_app {
+upstream {{ server_name|replace('.', '_') }}_app {
     server unix://{{ www_root }}/uwsgi.sock;
 }
 
@@ -64,7 +64,7 @@ server {
     }
 
     location / {
-        uwsgi_pass  {{ project_name }}_app;
+        uwsgi_pass  {{ server_name|replace('.', '_') }}_app;
         include  /etc/nginx/uwsgi_params;
     }
 }

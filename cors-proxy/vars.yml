@@ -5,9 +5,6 @@ system_packages:
   - nginx-extras
   - dnsmasq
 
-# a unix path-friendly name
-project_name: corsproxy
-
 # regex for domains to allow requests from
 origin_domains: '(.*\.)?perio\.do'
 
