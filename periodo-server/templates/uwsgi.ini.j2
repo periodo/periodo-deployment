@@ -5,6 +5,10 @@ chdir           = {{ install_root }}
 virtualenv      = {{ install_root }}/venv
 module          = periodo
 callable        = app
+env             = DATABASE={{ db_path }}
+{% if canonical is defined and canonical == "true" %}
+env             = CANONICAL=true
+{% endif %}
 
 # process-related settings
 master          = true
