@@ -59,10 +59,12 @@
       dest: "{{ install_root }}/periodo/secrets.py"
       group: deploy
 
-  - name: Create vocabulary file and empty DB
+  - name: Create vocabulary file and update DB schema
     make:
       chdir: "{{ install_root }}"
       target: all
+      params:
+        DB: "{{ db_path }}"
 
   - name: Make DB file writable by web server
     file:
