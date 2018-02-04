@@ -128,8 +128,10 @@
   file:
     path: "/etc/nginx/sites-enabled/{{ server_name }}-challenge.conf"
     state: absent
+  notify:
+  - restart nginx
 
-- name: Download intermediate cerificates
+- name: Download intermediate certificates
   get_url:
     url: "https://letsencrypt.org/certs/{{ item }}"
     dest: "{{ letsencrypt_certs }}/{{ item }}"
