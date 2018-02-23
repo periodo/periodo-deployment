@@ -75,6 +75,7 @@
     account_key: "{{ letsencrypt_account_key }}"
     csr: "{{ https_csr }}"
     dest: "{{ https_cert }}"
+    remaining_days: 21
   register: challenge
   become: true
 
