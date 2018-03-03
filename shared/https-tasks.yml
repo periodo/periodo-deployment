@@ -123,6 +123,7 @@
     csr: "{{ https_csr }}"
     dest: "{{ https_cert }}"
     data: "{{ challenge }}"
+    remaining_days: 21
   become: true
 
 - name: Remove nginx site for challenge
