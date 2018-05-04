@@ -24,8 +24,14 @@ www_root: "/var/www/{{ server_name }}"
 # the path to the sqlite db file
 db_path: "{{ www_root }}/db.sqlite"
 
+# the path to the nginx cache dir
+cache_path: "/var/cache/{{ server_name }}"
+
 # key size to use when generating keys
 rsa_key_size: 4096
+
+# e.g. staging_perio_do not staging.perio.do
+server_name_no_dots: "{{ server_name|replace('.', '_') }}"
 
 # where to put HTTPS keys and certs
 letsencrypt_root: "/etc/letsencrypt"

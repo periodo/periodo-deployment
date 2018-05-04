@@ -6,6 +6,7 @@ virtualenv      = {{ install_root }}/venv
 module          = periodo
 callable        = app
 env             = DATABASE={{ db_path }}
+env             = CACHE={{ cache_path }}
 {% if canonical is defined and canonical == "true" %}
 env             = CANONICAL=true
 {% endif %}

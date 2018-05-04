@@ -1,7 +1,22 @@
 # the upstream component nginx needs to connect to
-upstream {{ server_name|replace('.', '_') }}_app {
+upstream {{ server_name_no_dots }}_app {
     server unix://{{ www_root }}/uwsgi.sock;
 }
+
+# caching configuration
+uwsgi_cache_path
+    # path to cache dir
+    {{ cache_path }}
+    # 2 directory levels, 1st is 1 char, 2nd is 2 chars
+    levels=1:2
+    # put temporary files in the cache dir
+    use_temp_path=off
+    # name and size of the shared memory zone where keys are stored
+    keys_zone={{ server_name_no_dots }}_cache:10m
+    # time after which unrequested files are purged
+    inactive=1y
+    # maximum cache size before least recently requested files are purged
+    max_size=10g;
 
 server {
     listen      80;
@@ -64,7 +79,14 @@ server {
     }
 
     location / {
-        uwsgi_pass  {{ server_name|replace('.', '_') }}_app;
+        uwsgi_cache {{ server_name_no_dots }}_cache;
+        uwsgi_cache_key $request_uri;
+        uwsgi_cache_methods GET HEAD;
+        uwsgi_cache_revalidate on;
+
+        add_header X-Cache-Status $upstream_cache_status;
+
+        uwsgi_pass  {{ server_name_no_dots }}_app;
         include  /etc/nginx/uwsgi_params;
     }
 }
