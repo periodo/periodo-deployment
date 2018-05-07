@@ -1,6 +1,7 @@
 ---
 # apt packages
 system_packages:
+  - curl
   - git
   - make
   - python3.5

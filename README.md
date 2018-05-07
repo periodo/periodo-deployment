@@ -24,6 +24,18 @@ $ cd periodo-server/
 $ ansible-playbook -l staging.perio.do -K --extra-vars "initial_data=../periodo-data/initial-data.json" deploy.yml 
 ```
 
+To import a PeriodO export file (a gzipped SQL dump file) specify the extra variable `import_file`:
+```
+$ cd periodo-server/
+$ ansible-playbook -l staging.perio.do -K --extra-vars "import_file=../periodo-data/export.sql.gz" deploy.yml 
+```
+
+To import a PeriodO export directly from a public server specify the extra variable `import_url`:
+```
+$ cd periodo-server/
+$ ansible-playbook -l staging.perio.do -K --extra-vars "import_url=https://staging.perio.do/export.sql" deploy.yml 
+```
+
 ## Explanation of files
 
 [`ansible.cfg`](periodo-server/ansible.cfg) is the [Ansible configuration file](http://docs.ansible.com/ansible/latest/intro_configuration.html)
