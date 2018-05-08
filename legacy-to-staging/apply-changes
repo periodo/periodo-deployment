@@ -1,0 +1,39 @@
+#! /bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+
+usage () {
+    echo "Usage: DATASET=<dataset URL> CHANGES=<changes dir>\
+ $0 <change 1> <change 2> ..."
+    echo
+    echo "<change n> should be one of the changes in <changes dir>."
+    echo
+    exit 1
+}
+
+if [ -z "$DATASET" ]; then
+    usage
+fi
+
+# shellcheck disable=SC2153
+if [ -z "$CHANGES" ]; then
+    usage
+fi
+
+SERVER_URL=${DATASET%/d.json}
+SERVER=${SERVER_URL#https://}
+
+periodo -s "$SERVER_URL" refresh-token
+
+cd "$CHANGES"
+
+for CHANGE in "$@"; do
+
+    "./try" accept $CHANGE
+    PATCHFILE="changes/accepted/$SERVER/$(date -u +%F)-$CHANGE/patch.json"
+    PATCH=$(periodo -s "$SERVER_URL" submit-patch "$PATCHFILE")
+    if [ -z "$PATCH" ]; then
+        break
+    fi
+    periodo -s "$SERVER_URL" merge-patch "$PATCH"
+done
