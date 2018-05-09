@@ -1,0 +1,5 @@
+[periodo-server]
+staging.perio.do server_name=staging.perio.do ansible_become=yes
+
+[cors-proxy]
+corsproxy.perio.do server_name=corsproxy.perio.do ansible_become=yes

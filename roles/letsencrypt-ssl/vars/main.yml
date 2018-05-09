@@ -1,38 +1,5 @@
----
-# apt packages
-system_packages:
-  - curl
-  - git
-  - make
-  - python3.5
-  - python3.5-venv
-  - nginx
-  - uwsgi
-  - uwsgi-plugin-python3
-  - sqlite3
-  - npm
-  - highlight
-
-# the git repository URL
-project_repo: https://github.com/periodo/periodo-server.git
-
-# the root path to install to
-install_root: "/srv/{{ server_name }}"
-
-# the root path for www-visible documents
-www_root: "/var/www/{{ server_name }}"
-
-# the path to the sqlite db file
-db_path: "{{ www_root }}/db.sqlite"
-
-# the path to the nginx cache dir
-cache_path: "/var/cache/{{ server_name }}"
-
 # key size to use when generating keys
 rsa_key_size: 4096
-
-# e.g. staging_perio_do not staging.perio.do
-server_name_no_dots: "{{ server_name|replace('.', '_') }}"
 
 # where to put HTTPS keys and certs
 letsencrypt_root: "/etc/letsencrypt"

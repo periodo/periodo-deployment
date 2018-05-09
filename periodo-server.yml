@@ -1,0 +1,12 @@
+---
+- hosts: periodo-server
+
+  gather_facts: false
+
+  pre_tasks:
+  - import_tasks: setup-tasks.yml
+
+  roles:
+    - { role: ssl,             when: inventory_file == "production" }
+    - { role: letsencrypt-ssl, when: inventory_file != "production" }
+    - periodo-server

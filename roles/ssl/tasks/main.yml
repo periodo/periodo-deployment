@@ -1,0 +1,20 @@
+---
+- name: Copy SSL certificates
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/ssl/certs/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - lib.utexas.edu.pem
+
+- name: Copy SSL keys
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/ssl/private/{{ item }}"
+    owner: root
+    group: root
+    mode: 0640
+  with_items:
+    - lib.utexas.edu.key

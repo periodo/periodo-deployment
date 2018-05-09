@@ -1,0 +1,2 @@
+[periodo-server]
+periodo canonical=true server_name=periodo.lib.utexas.edu ansible_connection=ssh ansible_user=root ansible_become=no

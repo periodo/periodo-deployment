@@ -5,7 +5,6 @@
   changed_when:
   - output.stdout != ""
   - output.stdout != "\r\n"
-  become: true
 
 - name: Gather facts
   setup:
