@@ -1,73 +1,52 @@
 ---
-- name: Make nginx sites-enabled writable by deploy group
-  file:
-    path: /etc/nginx/sites-enabled
-    state: directory
-    group: deploy
-    mode: u=rwx,g=rwx,o=rx
-  become: true
-
-- name: Remove default nginx site
-  file: path=/etc/nginx/sites-enabled/default state=absent
-  become: true
-
-- name: Create letsencrypt keys directory
+- name: Create keys directory
   file: path="{{ letsencrypt_keys }}" state=directory
-  become: true
 
-- name: Create letsencrypt certs directory
+- name: Create certs directory
   file: path="{{ letsencrypt_certs }}" state=directory
-  become: true
 
-- name: Create letsencrypt challenges directory
+- name: Create challenges directory
   file:
     path: "{{ letsencrypt_challenges }}"
     state: directory
     group: www-data
     mode: u=rwx,g=rwx,o=rx,g+s
-  become: true
 
-- name: Generate letsencrypt account private key
+- name: Generate account private key
   command:
     "openssl genrsa -out {{ letsencrypt_account_key }} {{ rsa_key_size }}"
   args:
     creates: "{{ letsencrypt_account_key }}"
-  become: true
 
-- name: Make letsencrypt account private key readable by root only
+- name: Make account private key readable by root only
   file:
     path: "{{ letsencrypt_account_key }}"
     mode: u=rw,g=,o=
-  become: true
 
 - name: Generate HTTPS private key
   command: "openssl genrsa -out {{ https_key }} {{ rsa_key_size }}"
   args:
     creates: "{{ https_key }}"
-  become: true
 
 - name: Make HTTPS private key readable by root only
   file:
     path: "{{ https_key }}"
     mode: u=rw,g=,o=
-  become: true
 
-- name: Generate certificate signing request
+- name: Generate certificate signing request (CSR)
   command: "openssl req -new
     -key {{ https_key }}
     -out {{ https_csr }}
     -nodes -subj '/C=US/ST=NC/L=CH/O=UNC/CN={{ server_name }}'"
   args:
     creates: "{{ https_csr }}"
-  become: true
 
-- name: Make certificate signing request readable by root only
+- name: Make CSR readable by root only
   file:
     path: "{{ https_csr }}"
     mode: u=rw,g=,o=
-  become: true
 
-- name: Request letsencrypt challenge
+- name: Request challenge
   letsencrypt:
     acme_directory: "{{ letsencrypt_acme_directory }}"
     agreement: "{{ letsencrypt_agreement }}"
@@ -77,7 +56,6 @@
     dest: "{{ https_cert }}"
     remaining_days: 21
   register: challenge
-  become: true
 
 - name: Create challenge directory
   file:
@@ -97,7 +75,6 @@
   vars:
     challenge_file:
       "{{ challenge['challenge_data'][server_name]['http-01'] }}"
-  become: true
 
 - name: Copy nginx config to serve challenge
   template:
@@ -109,7 +86,7 @@
     challenge_dest:
       "{{ challenge['challenge_data'][server_name]['http-01']['resource'] }}"
   notify:
-  - restart nginx
+  - Restart nginx
 
 # ensure that nginx gets restarted after enabling challenge site
 - meta: flush_handlers
@@ -124,14 +101,13 @@
     dest: "{{ https_cert }}"
     data: "{{ challenge }}"
     remaining_days: 21
-  become: true
 
 - name: Remove nginx site for challenge
   file:
     path: "/etc/nginx/sites-enabled/{{ server_name }}-challenge.conf"
     state: absent
   notify:
-  - restart nginx
+  - Restart nginx
 
 - name: Download intermediate certificates
   get_url:
@@ -141,7 +117,6 @@
   with_items:
   - lets-encrypt-x3-cross-signed.pem
   - lets-encrypt-x4-cross-signed.pem
-  become: true
 
 - name: Create a full-chain certificate from components
   shell: >
@@ -150,10 +125,8 @@
     {{ letsencrypt_certs }}/lets-encrypt-x4-cross-signed.pem
     > {{ https_chain }}
   when: challenge|changed
-  become: true
 
 - name: Create Diffie–Hellman parameters
   shell: >
     openssl dhparam -dsaparam -out {{ https_dhparams }} {{ rsa_key_size }}
   when: challenge|changed
-  become: true

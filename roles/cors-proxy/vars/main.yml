@@ -1,0 +1,12 @@
+---
+# apt packages
+system_packages:
+  - nginx
+  - nginx-extras
+  - dnsmasq
+
+# regex for domains to allow requests from
+origin_domains: '(.*\.)?perio\.do'
+
+# regex for domains to proxy
+proxy_domains: '((.*\.)?worldcat\.org|(.*\.)?orcid\.org)'
