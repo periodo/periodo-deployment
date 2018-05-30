@@ -7,6 +7,7 @@ module          = periodo
 callable        = app
 env             = DATABASE={{ db_path }}
 env             = CACHE={{ cache_path }}
+env             = SERVER_NAME={{ server_name }}
 {% if canonical is defined and canonical == "true" %}
 env             = CANONICAL=true
 {% endif %}
