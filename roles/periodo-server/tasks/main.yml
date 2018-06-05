@@ -1,58 +1,26 @@
 ---
+- name: Include os-specific vars
+  include_vars: "vars/{{ ansible_os_family }}.yml"
+
 - name: Install system packages
-  apt:
-    pkg: "{{ item }}"
-    update-cache: yes
+  package:
+    name: "{{ item }}"
+    state: present
   with_items:
     - "{{ system_packages }}"
-
-- name: Create deploy group
-  group:
-    name: deploy
-    state: present
-
-- name: Create sudo group
-  group:
-    name: sudo
-    state: present
-
-- name: Create www-data group
-  group:
-    name: www-data
-    state: present
 
 - name: Create directory for app
   file:
     path: "{{ install_root }}"
     state: directory
-    group: deploy
-    mode: u=rwx,g=rwx,o=rx,g+s
+    mode: u=rwx,g=rx,o=rx,g+s
 
-- name: Create directory for www files
+- name: Create directory for WWW files
   file:
     path: "{{ www_root }}"
     state: directory
-    group: www-data
-    mode: u=rwx,g=rwx,o=rx,g+s
-
-- name: Make uwsgi apps-enabled writable by deploy group
-  file:
-    path: /etc/uwsgi/apps-enabled
-    state: directory
-    group: deploy
-    mode: u=rwx,g=rwx,o=rx
-
-- name: Make nginx sites-enabled writable by deploy group
-  file:
-    path: /etc/nginx/sites-enabled
-    state: directory
-    group: deploy
-    mode: u=rwx,g=rwx,o=rx
-
-- name: Remove default nginx site
-  file: path=/etc/nginx/sites-enabled/default state=absent
-
-# https stuff
+    owner: www-data
+    mode: u=rwx,g=rx,o=rx,g+s
 
 - name: Clone/pull project repo
   git:
@@ -65,7 +33,7 @@
   pip:
     requirements: "{{ install_root }}/requirements.txt"
     virtualenv: "{{ install_root }}/venv"
-    virtualenv_command: "/usr/bin/python3 -m venv"
+    virtualenv_command: "{{ python3_executable }} -m venv"
   notify:
   - Restart uwsgi
 
@@ -73,13 +41,11 @@
   template:
     src: files/secrets.py
     dest: "{{ install_root }}/periodo/secrets.py"
-    group: deploy
 
 - name: Upload PeriodO export file to be imported
   copy:
     src: "{{ import_file }}"
     dest: "{{ install_root }}/export.sql.gz"
-    group: deploy
   when: import_file is defined
 
 - name: Remove old export file
@@ -108,13 +74,13 @@
   file:
     path: "{{ db_path }}"
     state: file
-    mode: u=rwx,g=rwx,o=rx
+    owner: www-data
+    mode: u=rwx,g=rx,o=rx
 
 - name: Upload initial data to be loaded
   copy:
     src: "{{ initial_data }}"
     dest: "{{ install_root }}/initial-data.json"
-    group: deploy
   when: initial_data is defined
 
 - name: Load initial data
@@ -145,8 +111,7 @@
 - name: Copy uwsgi config
   template:
     src: templates/uwsgi.ini.j2
-    dest: "/etc/uwsgi/apps-enabled/{{ server_name }}.ini"
-    group: deploy
+    dest: "{{ uwsgi_conf_dir }}{{ server_name }}.ini"
   notify:
   - Restart uwsgi
 
@@ -160,8 +125,7 @@
 - name: Copy nginx config
   template:
     src: templates/nginx.conf.j2
-    dest: "/etc/nginx/sites-enabled/{{ server_name }}.conf"
-    group: deploy
+    dest: "{{ nginx_conf_dir }}{{ server_name }}.conf"
   notify:
   - Restart nginx
 

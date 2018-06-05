@@ -31,7 +31,7 @@ server {
     merge_slashes off;
 
     location ~* ^/(?<upstream>https?://{{ proxy_domains }})(?<path>/.*)$ {
-        more_set_headers 'Access-Control-Allow-Origin: $http_origin';
+        add_header Access-Control-Allow-Origin $http_origin always;
         proxy_set_header Host $proxy_host;
         proxy_redirect ~*^(?<url>.*)$ https://{{ server_name }}/$url;
         proxy_pass $upstream$path;

@@ -1,18 +1,4 @@
 ---
-# apt packages
-system_packages:
-  - curl
-  - git
-  - make
-  - python3.5
-  - python3.5-venv
-  - nginx
-  - uwsgi
-  - uwsgi-plugin-python3
-  - sqlite3
-  - npm
-  - highlight
-
 # the git repository URL
 project_repo: https://github.com/periodo/periodo-server.git
 

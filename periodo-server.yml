@@ -4,9 +4,10 @@
   gather_facts: false
 
   pre_tasks:
-  - import_tasks: setup-tasks.yml
+  - import_tasks: pre-tasks.yml
 
   roles:
+    - nginx
     - { role: ssl,             when: inventory_file == "production" }
     - { role: letsencrypt-ssl, when: inventory_file != "production" }
     - periodo-server

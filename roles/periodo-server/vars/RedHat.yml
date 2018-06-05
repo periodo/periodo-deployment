@@ -1,0 +1,16 @@
+---
+# yum packages
+system_packages:
+  - curl
+  - git
+  - make
+  - python36
+  - uwsgi
+  - uwsgi-plugin-python3
+  - sqlite
+  - npm
+  - highlight
+
+python3_executable: /usr/bin/python3.6
+
+uwsgi_conf_dir: /etc/uwsgi.d/

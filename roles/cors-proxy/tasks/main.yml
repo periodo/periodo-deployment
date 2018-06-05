@@ -1,9 +1,16 @@
 ---
+# dnsmasq is a small name server used by nginx to resolve names of
+# upstream servers into addresses. See:
+# http://nginx.org/en/docs/http/ngx_http_core_module.html#resolver
+- name: Install dnsmasq
+  package:
+    name: dnsmasq
+    state: present
+
 - name: Copy dnsmasq config
   copy:
     src: files/dnsmasq.conf
     dest: "/etc/dnsmasq.conf"
-    group: deploy
   notify:
   - Restart dnsmasq
 
@@ -16,8 +23,7 @@
 - name: Copy nginx config
   template:
     src: templates/nginx.conf.j2
-    dest: "/etc/nginx/sites-enabled/{{ server_name }}.conf"
-    group: deploy
+    dest: "{{ nginx_conf_dir }}{{ server_name }}.conf"
   notify:
   - Restart nginx
 

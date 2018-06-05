@@ -1,10 +1,4 @@
 ---
-# apt packages
-system_packages:
-  - nginx
-  - nginx-extras
-  - dnsmasq
-
 # regex for domains to allow requests from
 origin_domains: '(.*\.)?perio\.do'
 

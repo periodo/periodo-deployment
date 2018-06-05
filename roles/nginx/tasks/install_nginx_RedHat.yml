@@ -1,0 +1,28 @@
+---
+- name: Add EPEL yum repository
+  yum_repository:
+    name: epel
+    description: EPEL yum repository
+    baseurl: "https://dl.fedoraproject.org/pub/epel/{{ ansible_distribution_major_version }}/x86_64/"
+    gpgkey: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
+
+- name: Install nginx using yum
+  yum:
+    pkg: nginx
+    update_cache: yes
+
+- name: Open HTTP port
+  firewalld:
+    service: http
+    immediate: true
+    permanent: true
+    state: enabled
+
+- name: Open HTTPS port
+  firewalld:
+    service: https
+    immediate: true
+    permanent: true
+    state: enabled
+
+- set_fact: nginx_conf_dir="/etc/nginx/conf.d/"

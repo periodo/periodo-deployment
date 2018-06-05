@@ -1,0 +1,15 @@
+- name: Install nginx
+  include: "install_nginx_{{ ansible_os_family }}.yml"
+
+- name: Create www-data user
+  user:
+    name: www-data
+    system: yes
+    create_home: no
+
+- name: Copy nginx config
+  template:
+    src: templates/nginx.conf.j2
+    dest: "/etc/nginx/nginx.conf"
+  notify:
+  - Restart nginx

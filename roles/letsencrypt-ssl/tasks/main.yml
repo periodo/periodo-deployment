@@ -9,8 +9,8 @@
   file:
     path: "{{ letsencrypt_challenges }}"
     state: directory
-    group: www-data
-    mode: u=rwx,g=rwx,o=rx,g+s
+    owner: www-data
+    mode: u=rwx,g=rx,o=rx,g+s
 
 - name: Generate account private key
   command:
@@ -61,7 +61,7 @@
   file:
     path: "{{ letsencrypt_challenges }}/{{ challenge_dest | dirname }}"
     state: directory
-  when: challenge|changed
+  when: challenge is changed
   vars:
     challenge_dest:
       "{{ challenge['challenge_data'][server_name]['http-01']['resource'] }}"
@@ -71,7 +71,7 @@
     dest: "{{ letsencrypt_challenges }}/{{ challenge_file['resource'] }}"
     content: "{{ challenge_file['resource_value'] }}"
     mode: u=rw,g=r,o=r
-  when: challenge|changed
+  when: challenge is changed
   vars:
     challenge_file:
       "{{ challenge['challenge_data'][server_name]['http-01'] }}"
@@ -79,9 +79,8 @@
 - name: Copy nginx config to serve challenge
   template:
     src: templates/nginx-challenge.conf.j2
-    dest: "/etc/nginx/sites-enabled/{{ server_name }}-challenge.conf"
-    group: deploy
-  when: challenge|changed
+    dest: "{{ nginx_conf_dir }}{{ server_name }}-challenge.conf"
+  when: challenge is changed
   vars:
     challenge_dest:
       "{{ challenge['challenge_data'][server_name]['http-01']['resource'] }}"
@@ -104,7 +103,7 @@
 
 - name: Remove nginx site for challenge
   file:
-    path: "/etc/nginx/sites-enabled/{{ server_name }}-challenge.conf"
+    path: "{{ nginx_conf_dir }}{{ server_name }}-challenge.conf"
     state: absent
   notify:
   - Restart nginx
@@ -124,9 +123,9 @@
     {{ letsencrypt_certs }}/lets-encrypt-x3-cross-signed.pem
     {{ letsencrypt_certs }}/lets-encrypt-x4-cross-signed.pem
     > {{ https_chain }}
-  when: challenge|changed
+  when: challenge is changed
 
 - name: Create Diffie–Hellman parameters
   shell: >
     openssl dhparam -dsaparam -out {{ https_dhparams }} {{ rsa_key_size }}
-  when: challenge|changed
+  when: challenge is changed

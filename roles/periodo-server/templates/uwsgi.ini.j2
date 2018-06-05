@@ -16,6 +16,8 @@ env             = CANONICAL=true
 master          = true
 processes       = 2
 socket          = {{ www_root }}/uwsgi.sock
+uid             = www-data
+gid             = www-data
 chown-socket    = www-data:www-data
 chmod-socket    = 664
 

@@ -1,0 +1,11 @@
+---
+# only needed on Debian; RedHat comes with python2 installed
+- name: Install python2 for Ansible if necessary
+  raw: bash -c "test -e /usr/bin/python2 || (apt -qqy update && apt install -qqy python-dev)"
+  register: output
+  changed_when:
+  - output.stdout != ""
+  - output.stdout != "\r\n"
+
+- name: Gather facts
+  setup:
