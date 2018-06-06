@@ -1,3 +1,7 @@
-`make deploy` to export legacy data from `LEGACY_SERVER`, update it as necessary, and deploy to `STAGING_SERVER`.
+`make clean deploy` to:
 
-`make patch` to do the above and apply the required patches to the deployed data.
+1. export legacy data from `LEGACY_SERVER`
+1. update it as necessary
+1. deploy `periodo-server` [`@pre-renaming`](https://github.com/periodo/periodo-server/tree/pre-renaming) to `TARGET_SERVER`
+1. apply necessary data patches
+1. deploy `periodo-server` `@HEAD` to `TARGET_SERVER`
