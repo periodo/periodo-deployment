@@ -1,0 +1,7 @@
+# key size to use when generating DH params
+rsa_key_size: 2048
+
+# where to put HTTPS keys and certs
+https_chain: "/etc/ssl/certs/lib.utexas.edu.pem"
+https_key: "/etc/ssl/private/lib.utexas.edu.key"
+https_dhparams: "/etc/ssl/certs/dhparams.pem"

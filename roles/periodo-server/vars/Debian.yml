@@ -14,4 +14,6 @@ system_packages:
 
 python3_executable: /usr/bin/python3.5
 
+uwsgi_executable: /usr/bin/uwsgi
 uwsgi_conf_dir: /etc/uwsgi/apps-enabled/
+uwsgi_python3_plugin: python35

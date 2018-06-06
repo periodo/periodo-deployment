@@ -9,8 +9,6 @@
   file:
     path: "{{ letsencrypt_challenges }}"
     state: directory
-    owner: www-data
-    mode: u=rwx,g=rx,o=rx,g+s
 
 - name: Generate account private key
   command:

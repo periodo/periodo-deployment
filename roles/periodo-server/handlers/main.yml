@@ -1,5 +1,10 @@
 ---
-- name: Restart uwsgi
+- name: Restart uwsgi app socket
   systemd:
-    name: uwsgi
+    name: "{{ server_name }}.socket"
     state: restarted
+
+- name: Restart uwsgi app service
+  systemd:
+    name: "{{ server_name }}.service"
+    state: stopped # it will start again on demand

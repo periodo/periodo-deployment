@@ -1,2 +1,5 @@
 [periodo-server]
-periodo canonical=true server_name=periodo.lib.utexas.edu ansible_connection=ssh ansible_user=root ansible_become=no
+periodo.lib.utexas.edu canonical=true server_name=periodo.lib.utexas.edu ansible_user=root ansible_become=no
+
+[cors-proxy]
+corsproxy.periodo.lib.utexas.edu server_name=corsproxy.periodo.lib.utexas.edu ansible_user=root ansible_become=no

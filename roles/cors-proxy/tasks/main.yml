@@ -29,7 +29,7 @@
 
 - name: Ensure nginx is running
   systemd:
-    name: nginx
+    name: nginx.service
     enabled: yes
     state: started
 

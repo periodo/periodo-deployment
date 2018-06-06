@@ -1,20 +1,23 @@
 ---
-- name: Copy SSL certificates
+- name: Copy SSL certificate
   copy:
-    src: "{{ item }}"
-    dest: "/etc/ssl/certs/{{ item }}"
+    src: lib.utexas.edu.pem
+    dest: "{{ https_chain }}"
     owner: root
     group: root
     mode: 0644
-  with_items:
-    - lib.utexas.edu.pem
+  register: ssl_cert
 
-- name: Copy SSL keys
+- name: Copy SSL key
   copy:
-    src: "{{ item }}"
-    dest: "/etc/ssl/private/{{ item }}"
+    src: lib.utexas.edu.key
+    dest: "{{ https_key }}"
     owner: root
     group: root
     mode: 0640
-  with_items:
-    - lib.utexas.edu.key
+  register: ssl_key
+
+- name: Create Diffie–Hellman parameters
+  shell: >
+    openssl dhparam -dsaparam -out {{ https_dhparams }} {{ rsa_key_size }}
+  when: ssl_cert is changed or ssl_key is changed

@@ -1,0 +1,14 @@
+[Unit]
+Description={{ server_name }} uWSGI app
+After=syslog.target
+
+[Service]
+ExecStart={{ uwsgi_executable }} \
+        --ini {{ uwsgi_conf_dir }}{{ server_name }}.ini
+User=www-data
+Group=www-data
+Restart=on-failure
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all

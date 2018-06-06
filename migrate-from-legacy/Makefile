@@ -1,8 +1,18 @@
+TARGET := testing
+TARGET_SERVER := migrating.perio.do
+
+# TARGET := staging
+# TARGET_SERVER := staging.perio.do
+
+# TARGET := production
+# TARGET_SERVER := periodo.lib.utexas.edu
+
 LEGACY_SERVER := aeshin
-STAGING_SERVER := staging.perio.do
 LEGACY_DB := /home/ptgolden/periodo/src/db.sqlite
+
 FIX_PERMS := s|\["action", "submit-patch"\]|\
 \["action", "submit-patch"\], \["action", "create-bag"\]|g
+
 CHANGES_REPO := https://github.com/periodo/periodo-validation
 
 legacy-export.sql.gz:
@@ -27,31 +37,45 @@ periodo-validation-master/shapes:
 periodo-validation-master/fix/node_modules:
 	cd periodo-validation-master/fix && npm install
 
-.PHONY: deploy
-deploy: export.sql.gz
-	cp -f $< ../periodo-server/
+.PHONY: deploy-pre-renaming
+deploy-pre-renaming: export.sql.gz
+	cp -f $< ../
 	ansible-playbook\
-	 -K\
-	 -i ../periodo-server/inventory.ini\
-	 -l $(STAGING_SERVER)\
-	 -e "import_file=$<"\
-	 ../periodo-server/deploy.yml
+	 --ask-become-pass\
+	 --vault-id=@prompt\
+	 --inventory ../$(TARGET)\
+	 --extra-vars="project_repo_version=pre-renaming"\
+	 --extra-vars="import_file=$<"\
+	 ../periodo-server.yml
+
+.PHONY: deploy
+deploy: patch
+	ansible-playbook\
+	 --ask-become-pass\
+	 --vault-id=@prompt\
+	 --inventory ../$(TARGET)\
+	 ../site.yml
 
 .PHONY: patch
 patch: periodo-validation-master\
  periodo-validation-master/shapes\
  periodo-validation-master/fix/node_modules\
- deploy
-	DATASET="https://$(STAGING_SERVER)/d.json" \
+ deploy-pre-renaming
+	DATASET="https://$(TARGET_SERVER)/d.json" \
 	CHANGES="$<" \
 	./apply-changes\
 	 whitelist-language-tags\
 	 use-lexvo-uris\
 	 broader-narrower\
 	 derived-from\
-	 expanded-context
+	 expanded-context\
+	 renaming
 
 .PHONY: clean
 clean:
 	rm -rf periodo-validation-master
 	rm -f *.sql *.sql.gz shapes
+	rm -f ../export.sql.gz
+
+.PHONY: all
+all: deploy

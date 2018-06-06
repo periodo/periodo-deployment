@@ -1,6 +1,6 @@
 # the upstream component nginx needs to connect to
 upstream {{ server_name_no_dots }}_app {
-    server unix://{{ www_root }}/uwsgi.sock;
+    server unix:///var/run/uwsgi/{{ server_name }}.socket;
 }
 
 # caching configuration
@@ -39,8 +39,9 @@ server {
 
     charset             utf-8;
 
-    # max upload size
-    client_max_body_size 75M;   # adjust to taste
+    # If the request body is larger than 8K, it is written to a temporary file
+    client_max_body_size 75M;
+    client_body_temp_path "{{ www_root }}/client_temp" 1 2;
 
     if ($host !~* ^{{ server_name }}$ ) {
         return 444;

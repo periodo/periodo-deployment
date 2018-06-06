@@ -1,5 +1,5 @@
 [periodo-server]
-testing.perio.do server_name=testing.perio.do ansible_user=root ansible_become=yes
+migrating.perio.do server_name=migrating.perio.do ansible_user=root ansible_become=no
 
 [cors-proxy]
-corsproxy.testing.perio.do server_name=corsproxy.testing.perio.do ansible_user=root ansible_become=yes
+corsproxy.migrating.perio.do server_name=corsproxy.migrating.perio.do ansible_user=root ansible_become=no

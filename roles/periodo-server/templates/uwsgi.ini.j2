@@ -1,25 +1,19 @@
 [uwsgi]
-
-plugins         = python3
-chdir           = {{ install_root }}
-virtualenv      = {{ install_root }}/venv
-module          = periodo
-callable        = app
-env             = DATABASE={{ db_path }}
-env             = CACHE={{ cache_path }}
-env             = SERVER_NAME={{ server_name }}
+master = true
+processes = 2
+cheap = true
+idle = 600
+die-on-idle = true
+plugins = {{ uwsgi_python3_plugin }}
+chdir = {{ install_root }}
+virtualenv = {{ install_root }}/venv
+module = periodo
+callable = app
+env = DATABASE={{ db_path }}
+env = CACHE={{ cache_path }}
+env = SERVER_NAME={{ server_name }}
 {% if canonical is defined and canonical == "true" %}
-env             = CANONICAL=true
+env = CANONICAL=true
 {% endif %}
-
-# process-related settings
-master          = true
-processes       = 2
-socket          = {{ www_root }}/uwsgi.sock
-uid             = www-data
-gid             = www-data
-chown-socket    = www-data:www-data
-chmod-socket    = 664
-
 # clear environment on exit
-vacuum          = true
+vacuum = true
