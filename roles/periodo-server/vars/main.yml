@@ -3,7 +3,7 @@
 project_repo: https://github.com/periodo/periodo-server.git
 
 # the version of the code to pull
-project_repo_version: HEAD
+project_repo_version: master
 
 # the root path to install to
 install_root: "/srv/{{ server_name }}"
