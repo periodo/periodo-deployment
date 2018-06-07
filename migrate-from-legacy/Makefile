@@ -1,8 +1,8 @@
-TARGET := testing
-TARGET_SERVER := migrating.perio.do
+# TARGET := testing
+# TARGET_SERVER := migrating.perio.do
 
-# TARGET := staging
-# TARGET_SERVER := staging.perio.do
+TARGET := staging
+TARGET_SERVER := staging.perio.do
 
 # TARGET := production
 # TARGET_SERVER := periodo.lib.utexas.edu
