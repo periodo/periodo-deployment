@@ -1,5 +1,8 @@
 [periodo-server]
-migrating.perio.do server_name=migrating.perio.do ansible_user=root ansible_become=no
+data.migrating.perio.do server_name=data.migrating.perio.do client_url=https://client.migrating.perio.do ansible_user=root ansible_become=no
 
 [cors-proxy]
 corsproxy.migrating.perio.do server_name=corsproxy.migrating.perio.do ansible_user=root ansible_become=no
+
+[periodo-client]
+client.migrating.perio.do server_name=client.migrating.perio.do ansible_user=root ansible_become=no

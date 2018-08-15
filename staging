@@ -1,5 +1,8 @@
 [periodo-server]
-staging.perio.do server_name=staging.perio.do ansible_become=yes
+data.staging.perio.do server_name=data.staging.perio.do client_url=https://client.staging.perio.do ansible_become=yes
 
 [cors-proxy]
 corsproxy.staging.perio.do server_name=corsproxy.staging.perio.do ansible_become=yes
+
+[periodo-client]
+client.staging.perio.do server_name=client.staging.perio.do ansible_become=yes

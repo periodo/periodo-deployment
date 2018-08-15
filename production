@@ -1,5 +1,8 @@
 [periodo-server]
-periodo.lib.utexas.edu canonical=true server_name=periodo.lib.utexas.edu ansible_user=root ansible_become=no
+data.perio.do canonical=true server_name=data.perio.do client_url=https://client.perio.do ansible_become=yes
 
 [cors-proxy]
-corsproxy.periodo.lib.utexas.edu server_name=corsproxy.periodo.lib.utexas.edu ansible_user=root ansible_become=no
+corsproxy.perio.do server_name=corsproxy.perio.do ansible_become=yes
+
+[periodo-client]
+client.perio.do server_name=client.perio.do ansible_become=yes

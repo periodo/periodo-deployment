@@ -4,16 +4,16 @@ system_packages:
   - curl
   - git
   - make
-  - python3.5
-  - python3.5-venv
+  - python3
+  - python3-venv
   - uwsgi
   - uwsgi-plugin-python3
   - sqlite3
   - npm
   - highlight
 
-python3_executable: /usr/bin/python3.5
+python3_executable: /usr/bin/python3
 
 uwsgi_executable: /usr/bin/uwsgi
 uwsgi_conf_dir: /etc/uwsgi/apps-available/
-uwsgi_python3_plugin: python35
+uwsgi_python3_plugin: python3

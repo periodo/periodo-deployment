@@ -1,11 +1,8 @@
-# TARGET := testing
-# TARGET_SERVER := migrating.perio.do
-
 TARGET := staging
-TARGET_SERVER := staging.perio.do
+TARGET_SERVER := data.staging.perio.do
 
 # TARGET := production
-# TARGET_SERVER := periodo.lib.utexas.edu
+# TARGET_SERVER := data.perio.do
 
 LEGACY_SERVER := aeshin
 LEGACY_DB := /home/ptgolden/periodo/src/db.sqlite

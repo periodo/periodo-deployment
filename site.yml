@@ -1,3 +1,4 @@
 ---
 - import_playbook: periodo-server.yml
 - import_playbook: cors-proxy.yml
+- import_playbook: periodo-client.yml

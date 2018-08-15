@@ -1,0 +1,38 @@
+---
+- name: Create directory for WWW files
+  file:
+    path: "{{ www_root }}"
+    state: directory
+    owner: www-data
+
+- name: Fetch latest client tarball
+  command: "npm pack periodo-client@{{ client_version }}"
+  args:
+    chdir: "{{ www_root }}"
+  register: tarball
+
+- name: Extract latest client
+  unarchive:
+    remote_src: yes
+    src: "{{ www_root }}/{{ tarball.stdout }}"
+    dest: "{{ www_root }}"
+    extra_opts:
+    - --strip-components=1
+
+- name: Remove tarball
+  file:
+    path: "{{ www_root }}/{{ tarball.stdout }}"
+    state: absent
+
+- name: Copy nginx config
+  template:
+    src: templates/nginx.conf.j2
+    dest: "{{ nginx_conf_dir }}{{ server_name }}.conf"
+  notify:
+  - Restart nginx
+
+- name: Ensure nginx is running
+  systemd:
+    name: nginx.service
+    enabled: yes
+    state: started

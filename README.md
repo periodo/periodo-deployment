@@ -6,6 +6,8 @@
 
 [`site.yml`](site.yml) is the [playbook](http://docs.ansible.com/ansible/latest/playbooks.html)
 
+`site.yml` simply imports the playbooks [`periodo-server.yml`](periodo-server.yml), [`periodo-client.yml`](periodo-client.yml), and [`cors-proxy.yml`](cors-proxy.yml). If you wish to only deploy one of these, substitute the appropriate playbook file name for `site.yml` in the examples below.
+
 ## How to deploy
 
 Install Ansible 2.5:
@@ -24,7 +26,7 @@ $ ansible-playbook \
 site.yml
 ```
 
-To deploy a specific version (branch, tag, or commit hash) specify the extra variable `project_repo_version`:
+To deploy a specific version (git branch, tag, or commit hash) of the server specify the extra variable `project_repo_version`:
 
 ```sh
 $ ansible-playbook \
@@ -32,6 +34,17 @@ $ ansible-playbook \
 --vault-id=@prompt \
 --inventory staging \
 --extra-vars "project_repo_version=pre-renaming" \
+site.yml
+```
+
+To deploy a specific NPM package version of the client specify the extra variable `client_version`:
+
+```sh
+$ ansible-playbook \
+--ask-become-pass \
+--vault-id=@prompt \
+--inventory staging \
+--extra-vars "client_version=3.0.0-pre.2" \
 site.yml
 ```
 

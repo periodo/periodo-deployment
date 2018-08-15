@@ -1,0 +1,6 @@
+---
+# the version of the client to deploy
+client_version: latest
+
+# the root path for www-visible documents
+www_root: "/var/www/{{ server_name }}"
