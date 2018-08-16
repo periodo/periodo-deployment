@@ -76,12 +76,14 @@
     src: "{{ install_root }}/vocab.ttl"
     dest: "{{ www_root }}/vocab.ttl"
     remote_src: yes
+  when: project_repo_version != 'pre-renaming'
 
 - name: Move vocabulary HTML file to web root
   copy:
     src: "{{ install_root }}/vocab.html"
     dest: "{{ www_root }}/vocab.html"
     remote_src: yes
+  when: project_repo_version != 'pre-renaming'
 
 - name: Make DB file writable by web server
   file:
