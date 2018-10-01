@@ -45,7 +45,7 @@
     mode: u=rw,g=,o=
 
 - name: Request challenge
-  letsencrypt:
+  acme_certificate:
     acme_directory: "{{ letsencrypt_acme_directory }}"
     agreement: "{{ letsencrypt_agreement }}"
     account_email: "{{ letsencrypt_account_email }}"
@@ -89,7 +89,7 @@
 - meta: flush_handlers
 
 - name: Respond to challenge and fetch certificate
-  letsencrypt:
+  acme_certificate:
     acme_directory: "{{ letsencrypt_acme_directory }}"
     agreement: "{{ letsencrypt_agreement }}"
     account_email: "{{ letsencrypt_account_email }}"
