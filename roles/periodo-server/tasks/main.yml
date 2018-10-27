@@ -60,8 +60,8 @@
     chdir: "{{ install_root }}"
     target: import
     params:
-      IMPORT_URL: "{{ import_url | default('') }}"
       DB: "{{ db_path }}"
+      IMPORT_URL: "{{ import_url | default('') }}"
   when: (import_file is defined) or (import_url is defined)
 
 - name: Create vocabulary files and update DB schema
@@ -103,8 +103,18 @@
     chdir: "{{ install_root }}"
     target: load_data
     params:
+      DB: "{{ db_path }}"
       DATA: "{{ install_root }}/initial-data.json"
   when: initial_data is defined
+
+- name: Grant admin permissions
+  make:
+    chdir: "{{ install_root }}"
+    target: set_permissions
+    params:
+      DB: "{{ db_path }}"
+      ORCID: "{{ admin_orcid }}"
+      PERMISSIONS: "{{ admin_permissions }}"
 
 - name: Install uwsgi app socket
   template:

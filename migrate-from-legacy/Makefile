@@ -43,6 +43,7 @@ deploy-pre-renaming: export.sql.gz
 	 --inventory ../$(TARGET)\
 	 --extra-vars="project_repo_version=pre-renaming"\
 	 --extra-vars="import_file=$<"\
+	 --extra-vars="admin_permissions=submit_patch,accept_patch,update_bag"\
 	 ../periodo-server.yml
 
 .PHONY: deploy

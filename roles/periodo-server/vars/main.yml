@@ -19,3 +19,7 @@ cache_path: "/var/cache/{{ server_name }}"
 
 # e.g. staging_perio_do not staging.perio.do
 server_name_no_dots: "{{ server_name|replace('.', '_') }}"
+
+# admin ID and default permissions
+admin_orcid: "https://orcid.org/0000-0002-5486-159X"
+admin_permissions: "submit_patch,accept_patch,update_bag,update_graph"
