@@ -1,8 +1,8 @@
-# TARGET := staging
-# TARGET_SERVER := data.staging.perio.do
+TARGET := staging
+TARGET_SERVER := data.staging.perio.do
 
-TARGET := production
-TARGET_SERVER := data.perio.do
+# TARGET := production
+# TARGET_SERVER := data.perio.do
 
 LEGACY_SERVER := aeshin
 LEGACY_DB := /home/ptgolden/periodo/src/db.sqlite
