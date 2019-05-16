@@ -8,11 +8,10 @@
 
 - name: Install yum packages
   yum:
-    name: "{{ item }}"
+    name:
+      "{{ system_packages }}"
     state: latest
     security: yes
-  with_items:
-    - "{{ system_packages }}"
 
 - name: Ensure python3 alias exists
   file:
