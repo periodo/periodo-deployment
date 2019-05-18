@@ -30,7 +30,7 @@ cd "$CHANGES"
 for CHANGE in "$@"; do
 
     "./try" accept $CHANGE
-    PATCHFILE="changes/accepted/$SERVER/$(date -u +%F)-$CHANGE/patch.json"
+    PATCHFILE="changes/accepted/$SERVER/$(date +%Y-%m-%d)-$CHANGE/patch.json"
     PATCH=$(periodo -s "$SERVER_URL" submit-patch "$PATCHFILE")
     if [ -z "$PATCH" ]; then
         break
