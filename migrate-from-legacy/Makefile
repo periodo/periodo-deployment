@@ -67,6 +67,7 @@ patch: periodo-validation-master\
 	 broader-narrower\
 	 derived-from\
 	 expanded-context\
+	 use-wikidata-for-spatial-coverage\
 	 renaming
 
 .PHONY: clean
