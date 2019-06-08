@@ -64,7 +64,7 @@ patch: periodo-validation-master\
 	./apply-changes\
 	 whitelist-language-tags\
 	 use-lexvo-uris\
-	 broader-narrower\
+	 broader\
 	 derived-from\
 	 expanded-context\
 	 use-wikidata-for-spatial-coverage\
