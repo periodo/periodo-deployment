@@ -19,6 +19,36 @@
     extra_opts:
     - --strip-components=1
 
+- name: Set PeriodO server URL in index.html
+  replace:
+    path: "{{ www_root }}/index.html"
+    after: '<script type="text/javascript">'
+    before: "</script>"
+    regexp:
+      "PERIODO_SERVER_URL = '[^']*'"
+    replace:
+      "PERIODO_SERVER_URL = 'https://{{ server_name|replace('client', 'data') }}/'"
+
+- name: Set PeriodO proxy URL in index.html
+  replace:
+    path: "{{ www_root }}/index.html"
+    after: '<script type="text/javascript">'
+    before: "</script>"
+    regexp:
+      "PERIODO_PROXY_URL = '[^']*'"
+    replace:
+      "PERIODO_PROXY_URL = 'https://{{ server_name|replace('client', 'corsproxy') }}/'"
+
+- name: Set PeriodO permalink URL in index.html
+  replace:
+    path: "{{ www_root }}/index.html"
+    after: '<script type="text/javascript">'
+    before: "</script>"
+    regexp:
+      "PERIODO_PERMALINK_URL = '[^']*'"
+    replace:
+      "PERIODO_PERMALINK_URL = 'http://n2t.net/ark:/99152/'"
+
 - name: Remove tarball
   file:
     path: "{{ www_root }}/{{ tarball.stdout }}"
