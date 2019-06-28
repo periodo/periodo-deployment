@@ -10,7 +10,7 @@
 
 ## How to deploy
 
-Install Ansible 2.5:
+Install Ansible:
 ```
 $ pip install ansible
 ```
@@ -84,15 +84,3 @@ site.yml
 ```
 
 Change `--inventory staging` to `--inventory production` to deploy to production.
-
-## Notes for migrating to UT Libraries
-
-The [`Makefile`](migrate-from-legacy/Makefile) in `migrate-from-legacy` documents the planned process for migrating the production server to the UT Libraries:
-
-1. __UNC__ will export legacy data from the production server and apply the necessary fixes ([details](https://github.com/periodo/periodo-deployment/blob/master/migrate-from-legacy/Makefile#L10-L29)).
-
-1. __UT__ will deploy the [`pre-renaming`](https://github.com/periodo/periodo-server/tree/pre-renaming) version of `periodo-server` to production, using the exported data from step #1 ([details](https://github.com/periodo/periodo-deployment/blob/2be368124a54158b5f547950d3e3539a6d46877f/migrate-from-legacy/Makefile#L43-L49)).
-
-1. __UNC__ will apply the necessary data patches to the production server ([details](https://github.com/periodo/periodo-deployment/blob/2be368124a54158b5f547950d3e3539a6d46877f/migrate-from-legacy/Makefile#L64-L72)).
-
-1. __UT__ will deploy the latest version of `periodo-server` to production ([details](https://github.com/periodo/periodo-deployment/blob/2be368124a54158b5f547950d3e3539a6d46877f/migrate-from-legacy/Makefile#L53-L57)).
