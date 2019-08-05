@@ -1,6 +1,0 @@
----
-- name: Install apt packages
-  apt:
-    name:
-      "{{ system_packages }}"
-    state: present

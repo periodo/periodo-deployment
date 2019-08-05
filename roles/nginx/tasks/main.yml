@@ -1,5 +1,13 @@
-- name: Install nginx
-  include: "install_nginx_{{ ansible_os_family }}.yml"
+---
+- name: Install nginx using apt
+  apt:
+    pkg: nginx
+    update_cache: yes
+
+- name: Remove default nginx site
+  file: path=/etc/nginx/sites-enabled/default state=absent
+
+- set_fact: nginx_conf_dir="/etc/nginx/sites-enabled/"
 
 - name: Create www-data user
   user:

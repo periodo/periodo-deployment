@@ -1,9 +1,9 @@
 ---
-- name: Include os-specific vars
-  include_vars: "vars/{{ ansible_os_family }}.yml"
-
-- name: Install system packages
-  include: "install_{{ ansible_os_family }}_packages.yml"
+- name: Install apt packages
+  apt:
+    name:
+      "{{ system_packages }}"
+    state: present
 
 - name: Create directory for app
   file:
