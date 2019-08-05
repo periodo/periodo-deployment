@@ -1,5 +1,5 @@
 [periodo_server]
-data.staging.perio.do server_name=data.staging.perio.do client_url=https://client.staging.perio.do canonical=false
+data.staging.perio.do server_name=data.staging.perio.do client_url=https://client.staging.perio.do ask_vault_pass=true canonical=false
 
 [cors_proxy]
 corsproxy.staging.perio.do server_name=corsproxy.staging.perio.do
