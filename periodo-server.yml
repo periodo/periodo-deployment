@@ -1,6 +1,5 @@
 ---
-- hosts: periodo-server
-
+- hosts: periodo_server
 
   roles:
     - nginx

@@ -1,6 +1,5 @@
 ---
-- hosts: periodo-client
-
+- hosts: periodo_client
 
   roles:
     - nginx

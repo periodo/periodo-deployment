@@ -1,8 +1,8 @@
-[periodo-server]
+[periodo_server]
 data.staging.perio.do server_name=data.staging.perio.do client_url=https://client.staging.perio.do canonical=false
 
-[cors-proxy]
+[cors_proxy]
 corsproxy.staging.perio.do server_name=corsproxy.staging.perio.do
 
-[periodo-client]
+[periodo_client]
 client.staging.perio.do server_name=client.staging.perio.do

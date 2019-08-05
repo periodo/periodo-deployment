@@ -1,6 +1,5 @@
 ---
-- hosts: cors-proxy
-
+- hosts: cors_proxy
 
   roles:
     - nginx
