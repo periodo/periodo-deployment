@@ -2,7 +2,7 @@
 
 [`ansible.cfg`](ansible.cfg) is the [Ansible configuration file](http://docs.ansible.com/ansible/latest/intro_configuration.html)
 
-[`testing`](testing), [`staging`](staging) and [`production`](production) are [inventories](http://docs.ansible.com/ansible/latest/intro_inventory.html) of hosts to deploy to
+[`staging`](staging) and [`production`](production) are [inventories](http://docs.ansible.com/ansible/latest/intro_inventory.html) of hosts to deploy to
 
 [`site.yml`](site.yml) is the [playbook](http://docs.ansible.com/ansible/latest/playbooks.html)
 
