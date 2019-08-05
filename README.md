@@ -1,4 +1,4 @@
-# PeriodO ansible deployment
+# PeriodO deployment using ansible
 
 ## Explanation of files
 
@@ -16,6 +16,13 @@ Install Ansible:
 ```
 $ pip install ansible
 ```
+
+If you have `make` installed:
+```
+$ make help
+```
+
+Otherwise, you can run `ansible-playbook` directly using the commands below.
 
 Run the Ansible playbook to deploy to the staging server and prompt
 for `sudo` password and Ansible vault password:

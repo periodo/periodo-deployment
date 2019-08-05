@@ -42,7 +42,7 @@ help:
 	@echo "Environment variables:"
 	@echo
 	@echo "  \033[1mINVENTORY\033[0m (default: staging)"
-	@echo "  The ansible inventory to deploy to. Valid options are 'staging' or 'production'"
+	@echo "  The ansible inventory to deploy to: 'staging' or 'production'"
 	@echo
 	@echo "  \033[1mSERVER_VERSION\033[0m"
 	@echo "  The specific version of the server to deploy (git commit-ish)"
