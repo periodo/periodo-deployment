@@ -1,23 +1,129 @@
 ---
-- name: Copy SSL certificate
-  copy:
-    src: lib.utexas.edu.pem
-    dest: "{{ https_chain }}"
-    owner: root
-    group: root
-    mode: 0644
-  register: ssl_cert
+- name: Create keys directory
+  file: path="{{ letsencrypt_keys }}" state=directory
 
-- name: Copy SSL key
+- name: Create certs directory
+  file: path="{{ letsencrypt_certs }}" state=directory
+
+- name: Create challenges directory
+  file:
+    path: "{{ letsencrypt_challenges }}"
+    state: directory
+
+- name: Generate account private key
+  command:
+    "openssl genrsa -out {{ letsencrypt_account_key }} {{ rsa_key_size }}"
+  args:
+    creates: "{{ letsencrypt_account_key }}"
+
+- name: Make account private key readable by root only
+  file:
+    path: "{{ letsencrypt_account_key }}"
+    mode: u=rw,g=,o=
+
+- name: Generate HTTPS private key
+  command: "openssl genrsa -out {{ https_key }} {{ rsa_key_size }}"
+  args:
+    creates: "{{ https_key }}"
+
+- name: Make HTTPS private key readable by root only
+  file:
+    path: "{{ https_key }}"
+    mode: u=rw,g=,o=
+
+- name: Generate certificate signing request (CSR)
+  command: "openssl req -new
+    -key {{ https_key }}
+    -out {{ https_csr }}
+    -nodes -subj '/C=US/ST=NC/L=CH/O=UNC/CN={{ server_name }}'"
+  args:
+    creates: "{{ https_csr }}"
+
+- name: Make CSR readable by root only
+  file:
+    path: "{{ https_csr }}"
+    mode: u=rw,g=,o=
+
+- name: Request challenge
+  acme_certificate:
+    acme_directory: "{{ letsencrypt_acme_directory }}"
+    agreement: "{{ letsencrypt_agreement }}"
+    account_email: "{{ letsencrypt_account_email }}"
+    account_key: "{{ letsencrypt_account_key }}"
+    csr: "{{ https_csr }}"
+    dest: "{{ https_cert }}"
+    remaining_days: 21
+  register: challenge
+
+- name: Create challenge directory
+  file:
+    path: "{{ letsencrypt_challenges }}/{{ challenge_dest | dirname }}"
+    state: directory
+  when: challenge is changed
+  vars:
+    challenge_dest:
+      "{{ challenge['challenge_data'][server_name]['http-01']['resource'] }}"
+
+- name: Move challenge to publicly served directory
   copy:
-    src: lib.utexas.edu.key
-    dest: "{{ https_key }}"
-    owner: root
-    group: root
-    mode: 0640
-  register: ssl_key
+    dest: "{{ letsencrypt_challenges }}/{{ challenge_file['resource'] }}"
+    content: "{{ challenge_file['resource_value'] }}"
+    mode: u=rw,g=r,o=r
+  when: challenge is changed
+  vars:
+    challenge_file:
+      "{{ challenge['challenge_data'][server_name]['http-01'] }}"
+
+- name: Copy nginx config to serve challenge
+  template:
+    src: templates/nginx-challenge.conf.j2
+    dest: "{{ nginx_conf_dir }}{{ server_name }}-challenge.conf"
+  when: challenge is changed
+  vars:
+    challenge_dest:
+      "{{ challenge['challenge_data'][server_name]['http-01']['resource'] }}"
+  notify:
+  - Restart nginx
+
+# ensure that nginx gets restarted after enabling challenge site
+- meta: flush_handlers
+
+- name: Respond to challenge and fetch certificate
+  acme_certificate:
+    acme_directory: "{{ letsencrypt_acme_directory }}"
+    agreement: "{{ letsencrypt_agreement }}"
+    account_email: "{{ letsencrypt_account_email }}"
+    account_key: "{{ letsencrypt_account_key }}"
+    csr: "{{ https_csr }}"
+    dest: "{{ https_cert }}"
+    data: "{{ challenge }}"
+    remaining_days: 21
+
+- name: Remove nginx site for challenge
+  file:
+    path: "{{ nginx_conf_dir }}{{ server_name }}-challenge.conf"
+    state: absent
+  notify:
+  - Restart nginx
+
+- name: Download intermediate certificates
+  get_url:
+    url: "https://letsencrypt.org/certs/{{ item }}"
+    dest: "{{ letsencrypt_certs }}/{{ item }}"
+    mode: 0444
+  with_items:
+  - lets-encrypt-x3-cross-signed.pem
+  - lets-encrypt-x4-cross-signed.pem
+
+- name: Create a full-chain certificate from components
+  shell: >
+    cat {{ https_cert }}
+    {{ letsencrypt_certs }}/lets-encrypt-x3-cross-signed.pem
+    {{ letsencrypt_certs }}/lets-encrypt-x4-cross-signed.pem
+    > {{ https_chain }}
+  when: challenge is changed
 
 - name: Create Diffie–Hellman parameters
   shell: >
     openssl dhparam -dsaparam -out {{ https_dhparams }} {{ rsa_key_size }}
-  when: ssl_cert is changed or ssl_key is changed
+  when: challenge is changed

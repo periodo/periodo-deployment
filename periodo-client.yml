@@ -8,6 +8,5 @@
 
   roles:
     - nginx
-    - { role: ssl,             when: inventory_file == "production" }
-    - { role: letsencrypt-ssl, when: inventory_file != "production" }
+    - ssl
     - periodo-client
