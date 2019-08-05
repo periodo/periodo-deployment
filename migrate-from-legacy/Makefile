@@ -38,8 +38,6 @@ periodo-validation-master/fix/node_modules:
 deploy-pre-renaming: export.sql.gz
 	cp -f $< ../
 	ansible-playbook\
-	 --ask-become-pass\
-	 --vault-id=@prompt\
 	 --inventory ../$(TARGET)\
 	 --extra-vars="project_repo_version=pre-renaming"\
 	 --extra-vars="import_file=$<"\
@@ -49,8 +47,6 @@ deploy-pre-renaming: export.sql.gz
 .PHONY: deploy
 deploy: patch
 	ansible-playbook\
-	 --ask-become-pass\
-	 --vault-id=@prompt\
 	 --inventory ../$(TARGET)\
 	 ../site.yml
 
