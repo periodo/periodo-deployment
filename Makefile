@@ -26,8 +26,6 @@ endif
 
 
 ANSIBLE_ARGS := \
-	--ask-become-pass \
-	--vault-id=@prompt \
 	--inventory $(INVENTORY) \
 	--extra-vars=\"$(EXTRA_VARS)\"
 
