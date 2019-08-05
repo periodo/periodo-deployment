@@ -1,8 +1,8 @@
 [periodo-server]
-data.perio.do canonical=true server_name=data.perio.do client_url=https://client.perio.do ansible_become=yes
+data.perio.do server_name=data.perio.do client_url=https://client.perio.do canonical=true
 
 [cors-proxy]
-corsproxy.perio.do server_name=corsproxy.perio.do ansible_become=yes
+corsproxy.perio.do server_name=corsproxy.perio.do
 
 [periodo-client]
-client.perio.do server_name=client.perio.do ansible_become=yes
+client.perio.do server_name=client.perio.do
