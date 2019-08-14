@@ -1,5 +1,5 @@
 [periodo_server]
-data.perio.do server_name=data.perio.do client_url=https://client.perio.do ask_vault_pass=true canonical=true
+data.perio.do server_name=data.perio.do client_url=https://client.perio.do canonical=true
 
 [cors_proxy]
 corsproxy.perio.do server_name=corsproxy.perio.do
