@@ -76,3 +76,5 @@ clean:
 
 .PHONY: all
 all: deploy
+	@echo
+	@echo Don\'t forget to deploy the gazetteers.
