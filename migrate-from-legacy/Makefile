@@ -37,7 +37,8 @@ periodo-validation-master/fix/node_modules:
 .PHONY: deploy-pre-renaming
 deploy-pre-renaming: export.sql.gz
 	cp -f $< ../
-	ansible-playbook\
+	ANSIBLE_CONFIG=../ansible.cfg\
+	 ansible-playbook\
 	 --inventory ../$(TARGET)\
 	 --extra-vars="project_repo_version=pre-renaming"\
 	 --extra-vars="import_file=$<"\
@@ -46,7 +47,8 @@ deploy-pre-renaming: export.sql.gz
 
 .PHONY: deploy
 deploy: patch
-	ansible-playbook\
+	ANSIBLE_CONFIG=../ansible.cfg\
+	 ansible-playbook\
 	 --inventory ../$(TARGET)\
 	 ../site.yml
 
