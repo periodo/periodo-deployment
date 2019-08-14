@@ -1,9 +1,7 @@
 ---
 - name: Install apt packages
   apt:
-    name:
-      "{{ system_packages }}"
-    state: present
+    name: "{{ system_packages }}"
 
 - name: Create directory for app
   file:
