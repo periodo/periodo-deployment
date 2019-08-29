@@ -4,6 +4,7 @@ processes = 2
 cheap = true
 idle = 600
 die-on-idle = true
+logto = /var/log/uwsgi/uwsgi.log
 plugins = {{ uwsgi_python3_plugin }}
 chdir = {{ install_root }}
 virtualenv = {{ install_root }}/venv
@@ -11,6 +12,7 @@ module = periodo
 callable = app
 env = DATABASE={{ db_path }}
 env = CACHE={{ cache_path }}
+env = RIOT={{ riot_path }}
 env = SERVER_NAME={{ server_name }}
 env = CLIENT_URL={{ client_url }}
 {% if canonical is defined and canonical == "true" %}
