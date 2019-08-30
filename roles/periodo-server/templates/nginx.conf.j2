@@ -54,8 +54,14 @@ server {
     location = /v.ttl {
         alias {{ www_root }}/vocab.ttl;
     }
+    location = /vocabulary.ttl {
+        alias {{ www_root }}/vocab.ttl;
+    }
 
     location = /v.ttl.html {
+        alias {{ www_root }}/vocab.html;
+    }
+    location = /vocabulary.ttl.html {
         alias {{ www_root }}/vocab.html;
     }
 
