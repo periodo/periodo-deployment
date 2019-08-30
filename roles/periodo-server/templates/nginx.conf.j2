@@ -51,6 +51,10 @@ server {
     gzip_types text/turtle application/n-triples application/json application/ld+json text/plain;
     gzip_vary on;
 
+    types {
+        text/turtle ttl;
+    }
+
     location = /v.ttl {
         alias {{ www_root }}/vocab.ttl;
     }
