@@ -1,3 +1,4 @@
 ---
 # Apache Jena version
 version: '3.13.1'
+checksum: 'sha512:0f77b94b12631bdc4ad337b8efbe47b47d349c82b9b36a532c8218866dca647c646a2a51d3fae8e82cd4aca3a6716808d0c3d80a6fbdc32884f13fb6f7536350'
