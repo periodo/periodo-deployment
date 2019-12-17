@@ -4,6 +4,7 @@ processes = 2
 cheap = true
 idle = 600
 die-on-idle = true
+close-on-exec2 = true
 logto = /var/log/uwsgi/uwsgi.log
 plugins = {{ uwsgi_python3_plugin }}
 chdir = {{ install_root }}
