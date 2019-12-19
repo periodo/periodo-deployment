@@ -1,7 +1,10 @@
 ---
 - name: Install JRE using apt
   apt:
-    name: default-jre
+    name: "{{ jre }}"
+
+- name: Set java alternative
+  command: "update-alternatives --set java /usr/lib/jvm/{{ jre }}-amd64/bin/java"
 
 - name: Download distribution tarball
   get_url:
@@ -21,4 +24,11 @@
     state: file
 
 - set_fact: riot_path="/opt/apache-jena-{{ version }}/bin/riot"
+
+- name: Verify arq command exists
+  file:
+    path: "/opt/apache-jena-{{ version }}/bin/arq"
+    state: file
+
+- set_fact: arq_path="/opt/apache-jena-{{ version }}/bin/arq"
 

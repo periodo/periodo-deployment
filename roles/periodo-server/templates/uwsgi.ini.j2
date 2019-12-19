@@ -5,15 +5,19 @@ cheap = true
 idle = 600
 die-on-idle = true
 close-on-exec2 = true
-logto = /var/log/uwsgi/uwsgi.log
+disable-logging = true
+logto = /var/log/uwsgi/{{ server_name }}.log
 plugins = {{ uwsgi_python3_plugin }}
 chdir = {{ install_root }}
 virtualenv = {{ install_root }}/venv
 module = periodo
 callable = app
+env = TMPDIR={{ tmpdir_path }}
 env = DATABASE={{ db_path }}
 env = CACHE={{ cache_path }}
 env = RIOT={{ riot_path }}
+env = ARQ={{ arq_path }}
+env = CSV_QUERY={{ csv_query_path }}
 env = SERVER_NAME={{ server_name }}
 env = CLIENT_URL={{ client_url }}
 {% if canonical is defined and canonical == "true" %}

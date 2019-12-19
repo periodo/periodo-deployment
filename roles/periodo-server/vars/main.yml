@@ -30,8 +30,14 @@ install_root: "/srv/{{ server_name }}"
 # the root path for www-visible documents
 www_root: "/var/www/{{ server_name }}"
 
+# the path to the temporary files directory
+tmpdir_path: "{{ www_root }}/server_temp"
+
 # the path to the sqlite db file
 db_path: "{{ www_root }}/db.sqlite"
+
+# the path to the csv query file
+csv_query_path: "{{ www_root }}/periods-as-csv.rq"
 
 # the path to the nginx cache dir
 cache_path: "/var/cache/{{ server_name }}"

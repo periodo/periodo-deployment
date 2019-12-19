@@ -20,6 +20,12 @@
     state: directory
     owner: www-data
 
+- name: Create server temp directory
+  file:
+    path: "{{ www_root }}/server_temp"
+    state: directory
+    owner: www-data
+
 - name: Clone/pull project repo
   git:
     repo: "{{ project_repo }}"
@@ -80,6 +86,13 @@
   copy:
     src: "{{ install_root }}/vocab.html"
     dest: "{{ www_root }}/vocab.html"
+    remote_src: yes
+  when: project_repo_version != 'pre-renaming'
+
+- name: Move CSV query file to web root
+  copy:
+    src: "{{ install_root }}/periods-as-csv.rq"
+    dest: "{{ www_root }}/periods-as-csv.rq"
     remote_src: yes
   when: project_repo_version != 'pre-renaming'
 
