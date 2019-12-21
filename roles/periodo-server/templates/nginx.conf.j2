@@ -5,6 +5,7 @@ upstream {{ server_name_no_dots }}_app {
 
 map $upstream_status $no_cache {
     500 1;
+    503 1;
     default 0;
 }
 
