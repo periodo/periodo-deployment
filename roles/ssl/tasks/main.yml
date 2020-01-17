@@ -47,11 +47,11 @@
 - name: Request challenge
   acme_certificate:
     acme_directory: "{{ letsencrypt_acme_directory }}"
-    agreement: "{{ letsencrypt_agreement }}"
+    acme_version: "{{ letsencrypt_acme_version }}"
     account_email: "{{ letsencrypt_account_email }}"
     account_key: "{{ letsencrypt_account_key }}"
     csr: "{{ https_csr }}"
-    dest: "{{ https_cert }}"
+    fullchain_dest: "{{  https_chain }}"
     remaining_days: 21
   register: challenge
 
@@ -91,13 +91,13 @@
 - name: Respond to challenge and fetch certificate
   acme_certificate:
     acme_directory: "{{ letsencrypt_acme_directory }}"
-    agreement: "{{ letsencrypt_agreement }}"
+    acme_version: "{{ letsencrypt_acme_version }}"
     account_email: "{{ letsencrypt_account_email }}"
     account_key: "{{ letsencrypt_account_key }}"
     csr: "{{ https_csr }}"
-    dest: "{{ https_cert }}"
-    data: "{{ challenge }}"
+    fullchain_dest: "{{ https_chain }}"
     remaining_days: 21
+    data: "{{ challenge }}"
 
 - name: Remove nginx site for challenge
   file:
@@ -105,23 +105,6 @@
     state: absent
   notify:
   - Restart nginx
-
-- name: Download intermediate certificates
-  get_url:
-    url: "https://letsencrypt.org/certs/{{ item }}"
-    dest: "{{ letsencrypt_certs }}/{{ item }}"
-    mode: 0444
-  with_items:
-  - lets-encrypt-x3-cross-signed.pem
-  - lets-encrypt-x4-cross-signed.pem
-
-- name: Create a full-chain certificate from components
-  shell: >
-    cat {{ https_cert }}
-    {{ letsencrypt_certs }}/lets-encrypt-x3-cross-signed.pem
-    {{ letsencrypt_certs }}/lets-encrypt-x4-cross-signed.pem
-    > {{ https_chain }}
-  when: challenge is changed
 
 - name: Create Diffie–Hellman parameters
   shell: >
