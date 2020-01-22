@@ -199,18 +199,18 @@
     enabled: yes
     state: started
 
-- name: prime cache of TTL dataset
-  become: no
-  local_action:
-    module: get_url
-    url: "https://{{ server_name }}/dataset.ttl"
-    dest: "{{ playbook_dir }}/{{ server_name }}-dataset.ttl"
-    timeout: 60
+# - name: prime cache of TTL dataset
+#   become: no
+#   local_action:
+#     module: get_url
+#     url: "https://{{ server_name }}/dataset.ttl"
+#     dest: "{{ playbook_dir }}/{{ server_name }}-dataset.ttl"
+#     timeout: 60
 
-- name: prime cache of CSV dataset
-  become: no
-  local_action:
-    module: get_url
-    url: "https://{{ server_name }}/dataset.csv"
-    dest: "{{ playbook_dir }}/{{ server_name }}-dataset.csv"
-    timeout: 120
+# - name: prime cache of CSV dataset
+#   become: no
+#   local_action:
+#     module: get_url
+#     url: "https://{{ server_name }}/dataset.csv"
+#     dest: "{{ playbook_dir }}/{{ server_name }}-dataset.csv"
+#     timeout: 120
