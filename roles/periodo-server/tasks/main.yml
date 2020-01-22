@@ -68,6 +68,11 @@
       IMPORT_URL: "{{ import_url | default('') }}"
   when: (import_file is defined) or (import_url is defined)
 
+- name: Ensure vocabulary is regenerated
+  file:
+    state: absent
+    path: "{{ install_root }}/vocab.ttl"
+
 - name: Create vocabulary files and update DB schema
   make:
     chdir: "{{ install_root }}"
