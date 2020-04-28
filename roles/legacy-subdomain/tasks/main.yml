@@ -1,0 +1,12 @@
+- name: Copy nginx config
+  template:
+    src: templates/nginx.conf.j2
+    dest: "{{ nginx_conf_dir }}{{ server_name }}.conf"
+  notify:
+  - Restart nginx
+
+- name: Ensure nginx is running
+  systemd:
+    name: nginx.service
+    enabled: yes
+    state: started

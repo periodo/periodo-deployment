@@ -6,3 +6,6 @@ corsproxy.staging.perio.do server_name=corsproxy.staging.perio.do
 
 [periodo_client]
 client.staging.perio.do server_name=client.staging.perio.do
+
+[legacy_subdomain]
+test.staging.perio.do server_name=test.staging.perio.do
