@@ -39,6 +39,12 @@ server {
         proxy_hide_header Access-Control-Allow-Origin;
         add_header Access-Control-Allow-Origin $http_origin always;
         proxy_set_header Host $proxy_host;
+
+        # temporary workaround for broken SSL config on pub.orcid.org
+        proxy_redirect
+          ~*^https://pub.orcid.org(?<path>.*)$
+          https://{{ server_name }}/https://orcid.org$path;
+
         proxy_redirect ~*^(?<url>.*)$ https://{{ server_name }}/$url;
         proxy_pass $upstream$path;
     }
