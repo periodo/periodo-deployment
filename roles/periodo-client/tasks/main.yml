@@ -6,18 +6,23 @@
     owner: www-data
 
 - name: Fetch latest client tarball
-  command: "npm pack periodo-client@{{ client_version }}"
-  args:
-    chdir: "{{ www_root }}"
-  register: tarball
+  get_url:
+    url: "https://{{ data_server_name }}/client-packages/periodo-client-{{ client_version }}.tgz"
+    dest: "{{ www_root }}/periodo-client-{{ client_version }}.tgz"
+    checksum: "sha256:https://{{ data_server_name }}/client-packages/periodo-client-{{ client_version }}.tgz.sha256"
 
 - name: Extract latest client
   unarchive:
     remote_src: yes
-    src: "{{ www_root }}/{{ tarball.stdout }}"
+    src: "{{ www_root }}/periodo-client-{{ client_version }}.tgz"
     dest: "{{ www_root }}"
     extra_opts:
     - --strip-components=1
+
+- name: Remove tarball
+  file:
+    path: "{{ www_root }}/periodo-client-{{ client_version }}.tgz"
+    state: absent
 
 - name: Set PeriodO server URL in index.html
   replace:
@@ -27,7 +32,7 @@
     regexp:
       "PERIODO_SERVER_URL = '[^']*'"
     replace:
-      "PERIODO_SERVER_URL = 'https://{{ server_name|replace('client', 'data') }}/'"
+      "PERIODO_SERVER_URL = 'https://{{ data_server_name }}/'"
 
 - name: Set PeriodO proxy URL in index.html
   replace:
@@ -37,7 +42,7 @@
     regexp:
       "PERIODO_PROXY_URL = '[^']*'"
     replace:
-      "PERIODO_PROXY_URL = 'https://{{ server_name|replace('client', 'corsproxy') }}/'"
+      "PERIODO_PROXY_URL = 'https://{{ corsproxy_server_name }}/'"
 
 - name: Set PeriodO permalink URL in index.html
   replace:
@@ -48,11 +53,6 @@
       "PERIODO_PERMALINK_URL = '[^']*'"
     replace:
       "PERIODO_PERMALINK_URL = 'http://n2t.net/ark:/99152/'"
-
-- name: Remove tarball
-  file:
-    path: "{{ www_root }}/{{ tarball.stdout }}"
-    state: absent
 
 - name: Copy nginx config
   template:
