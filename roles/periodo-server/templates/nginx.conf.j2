@@ -85,6 +85,11 @@ server {
         alias {{ www_root }}/vocab.html;
     }
 
+    location /client-packages {
+        alias {{ www_root }}/client_packages;
+        autoindex on;
+    }
+
     location / {
         uwsgi_cache {{ server_name_no_dots }}_cache;
         uwsgi_cache_key $request_uri;

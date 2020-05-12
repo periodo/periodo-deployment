@@ -26,6 +26,13 @@
     state: directory
     owner: www-data
 
+- name: Create client packages directory
+  file:
+    path: "{{ www_root }}/client_packages"
+    state: directory
+    owner: www-data
+    mode: 'g+rwx'
+
 - name: Clone/pull project repo
   git:
     repo: "{{ project_repo }}"
