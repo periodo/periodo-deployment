@@ -8,7 +8,7 @@
 
 - name: Download distribution tarball
   get_url:
-    url: "http://mirrors.ibiblio.org/apache/jena/binaries/apache-jena-{{ version }}.tar.gz"
+    url: "http://archive.apache.org/dist/jena/binaries/apache-jena-{{ version }}.tar.gz"
     checksum: "{{ checksum }}"
     dest: "/opt/apache-jena-{{ version }}.tar.gz"
 
