@@ -24,6 +24,16 @@
     path: "{{ www_root }}/periodo-client-{{ client_version }}.tgz"
     state: absent
 
+- name: Set PeriodO server URL in HTML link headers
+  replace:
+    path: "{{ www_root }}/index.html"
+    after: '<head>'
+    before: "</head>"
+    regexp:
+      '<link rel="(preconnect|dns-prefetch)" href="[^"]*">'
+    replace:
+      '<link rel="\1" href="https://{{ data_server_name }}">'
+
 - name: Set PeriodO server URL in index.html
   replace:
     path: "{{ www_root }}/index.html"
