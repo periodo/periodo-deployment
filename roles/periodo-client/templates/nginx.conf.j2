@@ -41,6 +41,20 @@ server {
         index index.html;
     }
 
+    location /images/ {
+        root {{ www_root }};
+
+        # cache images for a year
+        add_header Cache-Control "max-age=31536000";
+    }
+
+    location ~* ^/periodo-client.*.min\.js$ {
+        root {{ www_root }};
+
+        # cache minified JS for a year
+        add_header Cache-Control "max-age=31536000";
+    }
+
     location /index.html {
         root {{ www_root }};
 
