@@ -54,16 +54,6 @@
     replace:
       "PERIODO_PROXY_URL = 'https://{{ corsproxy_server_name }}/'"
 
-- name: Set PeriodO permalink URL in index.html
-  replace:
-    path: "{{ www_root }}/index.html"
-    after: '<script type="text/javascript">'
-    before: "</script>"
-    regexp:
-      "PERIODO_PERMALINK_URL = '[^']*'"
-    replace:
-      "PERIODO_PERMALINK_URL = 'http://n2t.net/ark:/99152/'"
-
 - name: Copy nginx config
   template:
     src: templates/nginx.conf.j2
