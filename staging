@@ -9,3 +9,6 @@ client.staging.perio.do server_name=client.staging.perio.do
 
 [legacy_subdomain]
 test.staging.perio.do server_name=test.staging.perio.do
+
+[run_tests]
+client.staging.perio.do server_name=client.staging.perio.do

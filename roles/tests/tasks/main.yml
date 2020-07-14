@@ -1,0 +1,14 @@
+---
+- name: Trigger periodo-tests build
+  uri:
+    url: 'https://api.travis-ci.com/repo/periodo%2Fperiodo-tests/requests'
+    method: POST
+    body: '{"request":{"branch":"master"}}'
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+      Travis-API-Version: '3'
+      Authorization: "token {{ travis_token }}"
+    status_code: 202
+  when: server_name == "client.staging.perio.do"
+

@@ -1,0 +1,5 @@
+---
+- hosts: run_tests
+
+  roles:
+    - tests

@@ -3,3 +3,4 @@
 - import_playbook: cors-proxy.yml
 - import_playbook: periodo-client.yml
 - import_playbook: legacy-subdomain.yml
+- import_playbook: run-tests.yml
