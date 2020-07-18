@@ -80,6 +80,13 @@
     state: absent
     path: "{{ install_root }}/vocab.ttl"
 
+- name: Install highlight theme
+  copy:
+    src: "{{ install_root }}/periodo.theme"
+    dest: "/usr/share/highlight/themes/periodo.theme.theme"
+    remote_src: yes
+  when: project_repo_version != 'pre-renaming'
+
 - name: Create vocabulary files and update DB schema
   make:
     chdir: "{{ install_root }}"
@@ -105,6 +112,13 @@
   copy:
     src: "{{ install_root }}/periods-as-csv.rq"
     dest: "{{ www_root }}/periods-as-csv.rq"
+    remote_src: yes
+  when: project_repo_version != 'pre-renaming'
+
+- name: Move CSS styles for syntax highlighting to web root
+  copy:
+    src: "{{ install_root }}/highlight-style.css"
+    dest: "{{ www_root }}/highlight-style.css"
     remote_src: yes
   when: project_repo_version != 'pre-renaming'
 
