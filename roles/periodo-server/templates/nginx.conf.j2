@@ -85,6 +85,10 @@ server {
         alias {{ www_root }}/vocab.html;
     }
 
+    location = /highlight-style.css {
+        alias {{ www_root }}/highlight-style.css;
+    }
+
     location /client-packages {
         alias {{ www_root }}/client_packages;
         autoindex on;
