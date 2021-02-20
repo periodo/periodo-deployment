@@ -1,4 +1,10 @@
 ---
+- name: Add adoptopenjdk repository into apt sources list
+  apt_repository:
+    repo: deb https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/ focal main
+    filename: adoptopenjdk
+    state: present
+
 - name: Install JRE using apt
   apt:
     name: "{{ jre }}"

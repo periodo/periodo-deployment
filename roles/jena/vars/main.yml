@@ -1,7 +1,7 @@
 ---
 # JRE
-jre: "adoptopenjdk-11-openj9-jre"
+jre: "adoptopenjdk-15-openj9-jre"
 
 # Apache Jena version
-version: "3.14.0"
-checksum: "sha512:ba2e966df3ff2c8727b02f95771aa9f9953687fadbd51a95fff3709bb342ca64c1ac54bc25c9e24432b038c14737979c48fad5885e5841d6c15cc4967859b037"
+version: "3.17.0"
+checksum: "sha512:321c763fa3b3532fa06bb146363722e58e10289194f622f2e29117b610521e62e7ea51b9d06cd366570ed143f2ebbeded22e5302d2375b49da253b7ddef86d34"
