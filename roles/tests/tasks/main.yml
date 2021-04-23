@@ -1,14 +1,13 @@
 ---
-- name: Trigger periodo-tests build
+- name: Trigger periodo-tests workflow
   uri:
-    url: 'https://api.travis-ci.com/repo/periodo%2Fperiodo-tests/requests'
+    url:
+      'https://api.github.com/repos/periodo/periodo-tests/actions/workflows/run-tests.yml/dispatches'
     method: POST
-    body: '{"request":{"branch":"master"}}'
+    body: '{"ref":"master"}'
     headers:
-      Content-Type: application/json
-      Accept: application/json
-      Travis-API-Version: '3'
-      Authorization: "token {{ travis_token }}"
-    status_code: 202
+      Accept: application/vnd.github.v3+json
+      Authorization: "token {{ github_token }}"
+    status_code: 204
   when: server_name == "client.staging.perio.do"
 
