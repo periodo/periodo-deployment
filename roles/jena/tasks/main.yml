@@ -17,6 +17,7 @@
     url: "http://archive.apache.org/dist/jena/binaries/apache-jena-{{ version }}.tar.gz"
     checksum: "{{ checksum }}"
     dest: "/opt/apache-jena-{{ version }}.tar.gz"
+    mode: "666"
 
 - name: Unarchive tarball
   unarchive:

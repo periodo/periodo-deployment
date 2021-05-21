@@ -10,6 +10,7 @@
     url: "https://{{ data_server_name }}/client-packages/periodo-client-{{ client_version }}.tgz"
     dest: "{{ www_root }}/periodo-client-{{ client_version }}.tgz"
     checksum: "sha256:https://{{ data_server_name }}/client-packages/periodo-client-{{ client_version }}.tgz.sha256"
+    mode: "666"
 
 - name: Extract latest client
   unarchive:
