@@ -98,6 +98,8 @@
     target: all
     params:
       DB: "{{ db_path }}"
+      RIOT: "{{ riot_path }}"
+      ARQ: "{{ arq_path }}"
 
 - name: Move vocabulary file to web root
   copy:
