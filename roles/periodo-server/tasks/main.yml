@@ -41,6 +41,11 @@
   notify:
   - Restart uwsgi app service
 
+- name: Remove existing venv
+  file:
+    path: "{{ install_root }}/venv"
+    state: absent
+
 - name: Install python packages
   pip:
     requirements: "{{ install_root }}/requirements.txt"
