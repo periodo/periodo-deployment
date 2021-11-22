@@ -72,6 +72,13 @@ server {
         text/css css;
     }
 
+    location = /d.ttl {
+        return 301 /dataset.ttl;
+    }
+    location = /d.csv {
+        return 301 /dataset.csv;
+    }
+
     location = /v.ttl {
         alias {{ www_root }}/vocab.ttl;
     }
