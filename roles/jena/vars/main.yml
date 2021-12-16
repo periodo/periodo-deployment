@@ -3,5 +3,5 @@
 jre: "adoptopenjdk-16-openj9-jre"
 
 # Apache Jena version
-version: "4.2.0"
-checksum: "sha512:783f049742fa8d19cc2c7b0184adc2f13e6fdec4a68815e883c50155aa7f045edc2a38a17249ec40a2c020ce64208a7a14a400a0f6bbc47dda316fcf52833bfe"
+version: "4.3.1"
+checksum: "sha512:cf026a4fe746a4d882920d45487cb792c96d3479b6bb9318b0c2039207fb45dd3c7eb46ae1dfae7664856f560f85676a91e8870f61eb1f4f18c850dfed2e5cc3"
