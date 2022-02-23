@@ -116,7 +116,7 @@ server {
         add_header Strict-Transport-Security "max-age=63072000" always;
 
         uwsgi_pass  {{ server_name_no_dots }}_app;
-        uwsgi_read_timeout 300s;
+        uwsgi_read_timeout 600s;
         include  /etc/nginx/uwsgi_params;
     }
 }
