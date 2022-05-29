@@ -1,8 +1,20 @@
 ---
-- name: Trigger periodo-tests workflow
+- name: Trigger end-to-end-tests workflow
   uri:
     url:
       'https://api.github.com/repos/periodo/periodo-tests/actions/workflows/run-tests.yml/dispatches'
+    method: POST
+    body: '{"ref":"master"}'
+    headers:
+      Accept: application/vnd.github.v3+json
+      Authorization: "token {{ github_token }}"
+    status_code: 204
+  when: server_name == "client.staging.perio.do"
+
+- name: Trigger end-to-end-tests (macos) workflow
+  uri:
+    url:
+      'https://api.github.com/repos/periodo/periodo-tests/actions/workflows/run-macos-tests.yml/dispatches'
     method: POST
     body: '{"ref":"master"}'
     headers:
