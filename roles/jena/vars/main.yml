@@ -1,6 +1,12 @@
 ---
-# JRE
-jre: "adoptopenjdk-16-openj9-jre"
+# Ubuntu version
+ubuntu_version: "focal"
+
+# Adoptium GPG key path
+key_path: "/usr/share/keyrings/adoptium.asc"
+
+# JDK
+jdk: "temurin-17-jdk"
 
 # Apache Jena version
 version: "4.5.0"

@@ -1,16 +1,26 @@
 ---
-- name: Add adoptopenjdk repository into apt sources list
+- name: Install apt transport for downloading via https
+  apt:
+    name: apt-transport-https
+
+- name: Download the Adoptium GPG key
+  get_url:
+    url: "https://packages.adoptium.net/artifactory/api/gpg/key/public"
+    dest: "{{ key_path }}"
+    mode: "644"
+
+- name: Add Adoptium repository into apt sources list
   apt_repository:
-    repo: deb https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/ focal main
-    filename: adoptopenjdk
+    repo: "deb [signed-by={{ key_path }}] https://packages.adoptium.net/artifactory/deb {{ ubuntu_version }} main"
+    filename: adoptium
     state: present
 
-- name: Install JRE using apt
+- name: Install JDK using apt
   apt:
-    name: "{{ jre }}"
+    name: "{{ jdk }}"
 
 - name: Set java alternative
-  command: "update-alternatives --set java /usr/lib/jvm/{{ jre }}-amd64/bin/java"
+  command: "update-alternatives --set java /usr/lib/jvm/{{ jdk }}-amd64/bin/java"
 
 - name: Download distribution tarball
   get_url:
