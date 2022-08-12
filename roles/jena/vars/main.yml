@@ -1,6 +1,6 @@
 ---
 # Ubuntu version
-ubuntu_version: "focal"
+ubuntu_version: "jammy"
 
 # Adoptium GPG key path
 key_path: "/usr/share/keyrings/adoptium.asc"
