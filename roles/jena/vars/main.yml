@@ -9,5 +9,5 @@ key_path: "/usr/share/keyrings/adoptium.asc"
 jdk: "temurin-17-jdk"
 
 # Apache Jena version
-version: "4.6.0"
-checksum: "sha512:1331de73dd6f06892fdcd07a869ebeb774331796ef85a4082a66700d2f0c96ef8c3f41b85512532e0d1d1736b6e0d747422812388e1ee98c50e6e8b0959a27d3"
+version: "4.6.1"
+checksum: "sha512:20c8de036e20a1722d122d87b10ed13bbb759550aeca51fd02371450146fb792e79f63d81595ddc4f1b9c63e522a88da18b0880218954c627bec159aacc7c3c5"
