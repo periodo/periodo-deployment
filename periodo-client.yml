@@ -1,7 +1,0 @@
----
-- hosts: periodo_client
-
-  roles:
-    - nginx
-    - ssl
-    - periodo-client

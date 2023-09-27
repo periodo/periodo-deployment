@@ -1,8 +1,0 @@
----
-- hosts: periodo_server
-
-  roles:
-    - nginx
-    - ssl
-    - jena
-    - periodo-server

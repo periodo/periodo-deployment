@@ -1,7 +1,0 @@
----
-- hosts: cors_proxy
-
-  roles:
-    - nginx
-    - ssl
-    - cors-proxy

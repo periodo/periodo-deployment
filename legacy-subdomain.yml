@@ -1,7 +1,0 @@
----
-- hosts: legacy_subdomain
-
-  roles:
-    - nginx
-    - ssl
-    - legacy-subdomain
