@@ -22,8 +22,8 @@ is reachable at
 The machines running these apps have public IPv6 and shared IPv4 addresses.
 
 Currently these apps run only in the `IAD` (Ashburn, Virginia, USA)
-region, but in the future they may run in multiple regions (e.g. AMS,
-NRT).
+region, but in the future they may run in multiple regions
+(e.g. `AMS`, `NRT`).
 
 1. [**`periodo-client`**](https://github.com/periodo/periodo-client)
    ([`client.perio.do`](https://client.perio.do/))
